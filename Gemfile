@@ -21,10 +21,13 @@ group :development, :test do
   gem 'guard-rspec'
   gem 'spring'
   gem 'spring-commands-rspec'
-  
+end
+
+group :test do
   gem 'rspec-rails', '~> 3.0'
   gem 'factory_girl_rails'
   gem 'rspec-request_describer'
   gem 'json_spec'
   gem 'database_rewinder'
+  gem 'webmock'
 end
