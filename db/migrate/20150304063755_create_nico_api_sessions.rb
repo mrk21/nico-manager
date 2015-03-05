@@ -1,9 +1,9 @@
 class CreateNicoApiSessions < ActiveRecord::Migration
   def change
-    create_table :nico_video_sessions do |t|
-      t.string :mail, null: false
-      t.string :cookie
+    create_table :nico_video_sessions, id: false do |t|
+      t.integer :id, primary_key: true
+      t.string :cookie, null: false
+      t.string :api_token, null: false
     end
-    add_index :nico_video_sessions, :mail, unique: true
   end
 end

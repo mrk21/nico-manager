@@ -17,10 +17,8 @@ ActiveRecord::Schema.define(version: 20150304063755) do
   enable_extension "plpgsql"
 
   create_table "nico_video_sessions", force: :cascade do |t|
-    t.string "mail",   null: false
-    t.string "cookie"
+    t.string "cookie",    null: false
+    t.string "api_token", null: false
   end
-
-  add_index "nico_video_sessions", ["mail"], name: "index_nico_video_sessions_on_mail", unique: true, using: :btree
 
 end
