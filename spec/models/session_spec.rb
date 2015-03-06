@@ -4,7 +4,7 @@ require 'webrick/cookie'
 
 RSpec.describe Session, type: :model do
   describe '::create_by_authorizing(mail, password)' do
-    let(:expected){ FactoryGirl.build :session }
+    let(:expected){ FactoryGirl.build :session_of_after_creating_user }
     let(:cookies){ WEBrick::Cookie.parse self.expected.cookie }
     let(:set_cookie){[
       "#{cookies[0]}; expires=Sat, 01-Mar-2025 12:44:38 GMT; path=/; domain=.nicovideo.jp",
@@ -50,6 +50,14 @@ RSpec.describe Session, type: :model do
     
     it 'should be saved to database' do
       expect(subject.new_record?).to be_falsy
+    end
+    
+    context 'when the user corresponding to the session not found' do
+      let(:expected){ FactoryGirl.build :session }
+      
+      it 'should create the user' do
+        expect(User.exists? subject.user_id).to be_truthy
+      end
     end
     
     context 'when authorization failed' do
