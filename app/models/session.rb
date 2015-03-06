@@ -4,6 +4,7 @@ require 'webrick/cookie'
 require 'nokogiri'
 
 class Session < ActiveRecord::Base
+  validates :user_id, presence: true, uniqueness: true
   validates :cookie, presence: true
   validates :api_token, presence: true
   
@@ -26,9 +27,9 @@ class Session < ActiveRecord::Base
     
     cookie = self.get_cookie(response)
     api_token = self.get_api_token(cookie)
-    id = self.get_id(api_token)
+    user_id = self.get_user_id(api_token)
     
-    self.create(id: id, cookie: cookie, api_token: api_token)
+    self.create(user_id: user_id, cookie: cookie, api_token: api_token)
   end
   
   protected
@@ -55,7 +56,7 @@ class Session < ActiveRecord::Base
     end.join
   end
   
-  def self.get_id(api_token)
+  def self.get_user_id(api_token)
     api_token.to_s.split('-')[0]
   end
 end

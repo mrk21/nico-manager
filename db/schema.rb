@@ -17,8 +17,11 @@ ActiveRecord::Schema.define(version: 20150304063755) do
   enable_extension "plpgsql"
 
   create_table "sessions", force: :cascade do |t|
-    t.string "cookie",    null: false
-    t.string "api_token", null: false
+    t.integer "user_id",   null: false
+    t.string  "cookie",    null: false
+    t.string  "api_token", null: false
   end
+
+  add_index "sessions", ["user_id"], name: "index_sessions_on_user_id", unique: true, using: :btree
 
 end

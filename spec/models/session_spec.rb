@@ -43,7 +43,9 @@ RSpec.describe Session, type: :model do
     subject { Session.create_by_authorizing self.auth[:mail], self.auth[:password] }
     
     it 'should be a new session' do
-      is_expected.to eq self.expected
+      actual_attributes = subject.attributes
+      actual_attributes['id'] = nil
+      expect(actual_attributes).to eq self.expected.attributes
     end
     
     it 'should be saved to database' do
