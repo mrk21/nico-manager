@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 20150304063755) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "nico_video_sessions", force: :cascade do |t|
+  create_table "sessions", force: :cascade do |t|
     t.string "cookie",    null: false
     t.string "api_token", null: false
   end

@@ -3,7 +3,7 @@ require 'uri'
 require 'webrick/cookie'
 require 'nokogiri'
 
-class NicoVideo::Session < ActiveRecord::Base
+class Session < ActiveRecord::Base
   validates :cookie, presence: true
   validates :api_token, presence: true
   

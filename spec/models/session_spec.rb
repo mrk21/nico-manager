@@ -2,9 +2,9 @@ require 'rails_helper'
 require 'uri'
 require 'webrick/cookie'
 
-RSpec.describe NicoVideo::Session, type: :model do
+RSpec.describe Session, type: :model do
   describe '::create_by_authorizing(mail, password)' do
-    let(:expected){ FactoryGirl.build :nico_video_session }
+    let(:expected){ FactoryGirl.build :session }
     let(:cookies){ WEBrick::Cookie.parse self.expected.cookie }
     let(:set_cookie){[
       "#{cookies[0]}; expires=Sat, 01-Mar-2025 12:44:38 GMT; path=/; domain=.nicovideo.jp",
@@ -40,7 +40,7 @@ RSpec.describe NicoVideo::Session, type: :model do
     end
     
     before { self.stub }
-    subject { NicoVideo::Session.create_by_authorizing self.auth[:mail], self.auth[:password] }
+    subject { Session.create_by_authorizing self.auth[:mail], self.auth[:password] }
     
     it 'should be a new session' do
       is_expected.to eq self.expected
