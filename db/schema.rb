@@ -25,9 +25,11 @@ ActiveRecord::Schema.define(version: 20150306104117) do
   add_index "sessions", ["user_id"], name: "index_sessions_on_user_id", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string "nickname"
-    t.string "avatar"
+    t.integer "niconico_id", null: false
+    t.string  "nickname"
+    t.string  "avatar"
   end
 
-  add_foreign_key "sessions", "users"
+  add_index "users", ["niconico_id"], name: "index_users_on_niconico_id", unique: true, using: :btree
+
 end

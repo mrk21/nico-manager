@@ -2,11 +2,22 @@ require 'uri'
 require 'nokogiri'
 
 class User < ActiveRecord::Base
-  has_one :session
+  has_one :session, primary_key: :niconico_id
+  
+  validates :niconico_id, presence: true, uniqueness: true
   
   TOP_URL = URI.parse('http://www.nicovideo.jp/my/mylist')
   
+  def self.authorize(mail, password)
+    session = Session.create_by_authorizing(mail, password)
+    user = User.create(niconico_id: session.user_id)
+    user.fetch_profile
+    user
+  end
+  
   def fetch_profile
+    return self if self.session.nil?
+    
     http = Net::HTTP.new(TOP_URL.host, TOP_URL.port)
     
     response = http.start do |http|
@@ -21,5 +32,6 @@ class User < ActiveRecord::Base
     uri = URI.parse(img.attribute('src').value)
     self.avatar = URI::HTTP.build(host: uri.host, path: uri.path)
     self.nickname = img.attribute('alt').value
+    self
   end
 end

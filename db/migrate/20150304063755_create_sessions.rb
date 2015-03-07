@@ -5,7 +5,6 @@ class CreateSessions < ActiveRecord::Migration
       t.string :cookie, null: false
       t.string :api_token, null: false
     end
-    
     add_index :sessions, :user_id, unique: true
   end
 end
