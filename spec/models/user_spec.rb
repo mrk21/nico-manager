@@ -70,4 +70,23 @@ RSpec.describe User, type: :model do
       end
     end
   end
+  
+  describe '#fetch_mylist()' do
+    let(:mylist){ FactoryGirl.build :mylist }
+    let(:video){ FactoryGirl.build :video }
+    let(:data){ JSON.parse(File.read('spec/fixtures/nico_api_deflist/ok.json'))['mylistitem'] }
+    
+    before do
+      allow(NicoApi::Deflist).to receive_messages(new: double(list: self.data))
+      self.mylist.user.fetch_mylist
+    end
+    
+    it 'should create mylist' do
+      expect(Mylist.all.map{|r| r.dup.attributes}).to eq [self.mylist.attributes]
+    end
+    
+    it 'should create videos' do
+      expect(Video.all.map{|r| r.dup.attributes}).to eq [self.video.attributes]
+    end
+  end
 end

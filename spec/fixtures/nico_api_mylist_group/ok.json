@@ -1,0 +1,17 @@
+{
+  "mylistgroup": [
+    {
+      "id": "12",
+      "user_id": "123",
+      "name": "hoge",
+      "description": "このスペースはメモ欄としてご自由にお使い下さい！",
+      "public": "0",
+      "default_sort": "1",
+      "create_time": 1409121606,
+      "update_time": 1409121615,
+      "sort_order": "1",
+      "icon_id": "0"
+    }
+  ],
+  "status": "ok"
+}

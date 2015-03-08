@@ -11,10 +11,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150306104117) do
+ActiveRecord::Schema.define(version: 20150308083254) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "entries", force: :cascade do |t|
+    t.integer "mylist_id", null: false
+    t.integer "video_id",  null: false
+  end
+
+  add_index "entries", ["mylist_id", "video_id"], name: "index_entries_on_mylist_id_and_video_id", unique: true, using: :btree
+
+  create_table "mylists", force: :cascade do |t|
+    t.integer "user_id",  null: false
+    t.integer "group_id"
+    t.string  "name"
+  end
+
+  add_index "mylists", ["group_id"], name: "index_mylists_on_group_id", unique: true, using: :btree
 
   create_table "sessions", force: :cascade do |t|
     t.integer "user_id",   null: false
@@ -32,4 +47,15 @@ ActiveRecord::Schema.define(version: 20150306104117) do
 
   add_index "users", ["niconico_id"], name: "index_users_on_niconico_id", unique: true, using: :btree
 
+  create_table "videos", force: :cascade do |t|
+    t.string "video_id",      null: false
+    t.string "title"
+    t.string "thumbnail_url"
+  end
+
+  add_index "videos", ["video_id"], name: "index_videos_on_video_id", unique: true, using: :btree
+
+  add_foreign_key "entries", "mylists"
+  add_foreign_key "entries", "videos"
+  add_foreign_key "mylists", "users"
 end

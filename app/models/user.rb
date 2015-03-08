@@ -2,7 +2,8 @@ require 'uri'
 require 'nokogiri'
 
 class User < ActiveRecord::Base
-  has_one :session, primary_key: :niconico_id
+  has_one :session, primary_key: :niconico_id, dependent: :destroy
+  has_many :mylists
   
   validates :niconico_id, presence: true, uniqueness: true
   
@@ -33,5 +34,21 @@ class User < ActiveRecord::Base
     self.avatar = URI::HTTP.build(host: uri.host, path: uri.path)
     self.nickname = img.attribute('alt').value
     self
+  end
+  
+  def fetch_mylist
+    list = NicoApi::Deflist.new(self.session).list
+    
+    Mylist.create(
+      user_id: self.id,
+      group_id: nil,
+      entries_attributes: list.map{|entry| {
+        video_attributes: {
+          video_id: entry['item_data']['video_id'],
+          title: entry['item_data']['title'],
+          thumbnail_url: entry['item_data']['thumbnail_url']
+        }
+      }}
+    )
   end
 end

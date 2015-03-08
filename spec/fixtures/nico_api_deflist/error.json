@@ -1,0 +1,7 @@
+{
+  "error": {
+    "code": "NOAUTH",
+    "description": "認証できませんでした"
+  },
+  "status": "fail"
+}
