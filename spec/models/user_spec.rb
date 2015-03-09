@@ -8,6 +8,8 @@ RSpec.describe User, type: :model do
     
     before do
       allow(Session).to receive_messages(create_by_authorizing: self.session)
+      allow_any_instance_of(User).to receive(:fetch_profile)
+      allow_any_instance_of(User).to receive(:fetch_mylist)
     end
     
     it 'should be user' do
@@ -20,6 +22,12 @@ RSpec.describe User, type: :model do
       it 'should create the user' do
         expect(subject.niconico_id).to eq session.user_id
       end
+    end
+    
+    context 'when authrization failed' do
+      let(:session){}
+      
+      it { is_expected.to be_nil }
     end
   end
   
@@ -77,7 +85,7 @@ RSpec.describe User, type: :model do
     let(:data){ JSON.parse(File.read('spec/fixtures/nico_api_deflist/ok.json'))['mylistitem'] }
     
     before do
-      allow(NicoApi::Deflist).to receive_messages(new: double(list: self.data))
+      allow_any_instance_of(NicoApi::Deflist).to receive_messages(list: self.data)
       self.mylist.user.fetch_mylist
     end
     

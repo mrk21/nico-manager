@@ -18,10 +18,13 @@ guard :rspec, cmd: './bin/rspec' do
   dsl.watch_spec_files_for(rails.views)
   
   watch(rails.controllers) do |m|
+    base_path = File.split(m[1])
+    request_spec_path = File.join('requests', base_path[0..-2], base_path.join('_'))
     [
       rspec.spec.("routing/#{m[1]}_routing"),
       rspec.spec.("controllers/#{m[1]}_controller"),
-      rspec.spec.("acceptance/#{m[1]}")
+      rspec.spec.("acceptance/#{m[1]}"),
+      rspec.spec.(request_spec_path)
     ]
   end
   

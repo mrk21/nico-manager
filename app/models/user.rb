@@ -11,8 +11,12 @@ class User < ActiveRecord::Base
   
   def self.authorize(mail, password)
     session = Session.create_by_authorizing(mail, password)
-    user = User.create(niconico_id: session.user_id)
+    return nil if session.nil?
+    
+    user = User.find_by(niconico_id: session.user_id)
+    user = User.create!(niconico_id: session.user_id) if user.nil?
     user.fetch_profile
+    user.fetch_mylist
     user
   end
   
