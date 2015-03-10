@@ -1,23 +1,21 @@
 class Api::SessionsController < ApplicationController
-  before_action :require_login, only: :show
+  before_action :require_authentication, only: :show
   
   def show
   end
   
   def create
-    auth = self.auth_params
-    if user = User.authorize(auth[:mail], auth[:password]) then
-      session[:user_id] = user.id
+    if @current_user = User.authenticate(self.auth_params) then
+      session[:user_id] = @current_user.id
       render action: :show
     else
       session[:user_id] = nil
-      render nothing: true, status: 400
+      render action: :create_error, status: 400
     end
   end
   
   def destroy
     session[:user_id] = nil
-    render nothing: true
   end
   
   protected

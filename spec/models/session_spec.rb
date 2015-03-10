@@ -3,7 +3,7 @@ require 'uri'
 require 'webrick/cookie'
 
 RSpec.describe Session, type: :model do
-  describe '::create_by_authorizing(mail, password)' do
+  describe '::create_by_authenticating(params)' do
     let(:expected){ FactoryGirl.build :session }
     let(:cookies){ WEBrick::Cookie.parse self.expected.cookie }
     let(:set_cookie){[
@@ -40,7 +40,7 @@ RSpec.describe Session, type: :model do
     end
     
     before { self.stub }
-    subject { Session.create_by_authorizing self.auth[:mail], self.auth[:password] }
+    subject { Session.create_by_authenticating self.auth }
     
     it 'should be a new session' do
       actual_attributes = subject.attributes

@@ -14,14 +14,14 @@ class Session < ActiveRecord::Base
   LOGGEDIN_URL = 'http://www.nicovideo.jp/'
   MYLIST_URL = URI.parse('http://www.nicovideo.jp/my/mylist')
   
-  def self.create_by_authorizing(mail, password)
+  def self.create_by_authenticating(params)
     https = Net::HTTP.new(LOGIN_URL.host, LOGIN_URL.port)
     https.use_ssl = true
     https.verify_mode = OpenSSL::SSL::VERIFY_NONE
     
     response = https.start do |https|
       uri = URI::Generic.build(path: LOGIN_URL.path, query: LOGIN_URL.query)
-      data = URI.encode_www_form(mail: mail, password: password)
+      data = URI.encode_www_form(params)
       https.post(uri.to_s, data)
     end
     

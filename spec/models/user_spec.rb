@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  describe '::authorize(mail, password)' do
+  describe '::authenticate(params)' do
     let(:session){ FactoryGirl.create :session }
     let(:auth){{mail: 'user_hoge@example.com', password: 'pass'}}
-    subject { User.authorize self.auth[:mail], self.auth[:password] }
+    subject { User.authenticate self.auth }
     
     before do
-      allow(Session).to receive_messages(create_by_authorizing: self.session)
+      allow(Session).to receive_messages(create_by_authenticating: self.session)
       allow_any_instance_of(User).to receive(:fetch_profile)
       allow_any_instance_of(User).to receive(:fetch_mylist)
     end

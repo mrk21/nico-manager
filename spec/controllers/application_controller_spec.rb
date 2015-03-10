@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe ApplicationController, type: :controller do
-  describe '#logged_in?()' do
+  describe '#require_authentication()' do
     let(:user){ FactoryGirl.create :user }
     
     controller do
-      before_action :require_login
+      before_action :require_authentication
       
       def index
         render text: 'ok', status: 200
@@ -14,11 +14,13 @@ RSpec.describe ApplicationController, type: :controller do
     
     before do
       session[:user_id] = self.user.id
-      get :index
+      subject
     end
     
+    subject { get :index, format: 'json' }
+    
     it 'should return a response set by the action' do
-      expect(response.body).to eq 'ok'
+      is_expected.to have_http_status 200
     end
     
     it 'should set current user' do
@@ -28,9 +30,8 @@ RSpec.describe ApplicationController, type: :controller do
     context 'when not logged in' do
       let(:user){ FactoryGirl.build :user }
       
-      it 'should return an error response' do
-        expect(response).to have_http_status(400)
-      end
+      it { is_expected.to have_http_status 400 }
+      it { is_expected.to render_template :require_authentication_error }
       
       it 'should not set current user' do
         expect(assigns(:current_user)).to be_nil

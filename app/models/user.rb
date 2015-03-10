@@ -9,8 +9,8 @@ class User < ActiveRecord::Base
   
   TOP_URL = URI.parse('http://www.nicovideo.jp/my/mylist')
   
-  def self.authorize(mail, password)
-    session = Session.create_by_authorizing(mail, password)
+  def self.authenticate(params)
+    session = Session.create_by_authenticating(params)
     return nil if session.nil?
     
     user = User.find_by(niconico_id: session.user_id)
