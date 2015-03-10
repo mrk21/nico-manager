@@ -1,0 +1,3 @@
+var stores = {};
+
+export = stores;

@@ -14,3 +14,7 @@
 
 Gemfile.lock
 **/vendor/bundle/
+
+# Ignore generated client files
+/public/index.html
+/public/assets/

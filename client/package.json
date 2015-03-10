@@ -1,0 +1,67 @@
+{
+  "name": "nico-manager",
+  "version": "0.1.0",
+  "description": "Manage the mylist of the NiconicoDouga.",
+  "main": "build/node/src/index.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mrk21/nico-manager.git"
+  },
+  "author": "Yuichi Murata",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mrk21/nico-manager/issues"
+  },
+  "homepage": "https://github.com/mrk21/nico-manager",
+  "devDependencies": {
+    "del": "^1.1.1",
+    "dtsm": "^0.8.0",
+    "gulp": "^3.8.11",
+    "gulp-espower": "^0.10.1",
+    "gulp-insert": "^0.4.0",
+    "gulp-karma": "0.0.4",
+    "gulp-load-plugins": "^0.8.1",
+    "gulp-mocha": "^2.0.0",
+    "gulp-rename": "^1.2.0",
+    "gulp-rev": "^3.0.1",
+    "gulp-rev-replace": "^0.4.0",
+    "gulp-sourcemaps": "^1.5.0",
+    "gulp-stylus": "^2.0.1",
+    "gulp-typescript": "^2.4.2",
+    "gulp-util": "^3.0.4",
+    "gulp-webpack": "^1.3.0",
+    "gulp-webserver": "^0.9.0",
+    "jsdom": "^4.0.2",
+    "karma": "^0.12.31",
+    "karma-mocha": "^0.1.10",
+    "karma-mocha-reporter": "^1.0.0",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "karma-sourcemap-loader": "^0.3.4",
+    "lodash": "^3.5.0",
+    "minimist": "^1.1.0",
+    "mocha": "^2.2.1",
+    "nib": "^1.1.0",
+    "phantomjs": "^1.9.16",
+    "power-assert": "^0.10.2",
+    "proxy-middleware": "^0.11.0",
+    "react-test-utils": "0.0.1",
+    "rev-del": "^1.0.4",
+    "rimraf": "^2.3.2",
+    "source-map-support": "^0.2.9",
+    "through2": "^0.6.3",
+    "ts-jsx-loader": "^0.1.2",
+    "ts-loader": "^0.3.2",
+    "vinyl-named": "^1.1.0",
+    "webpack": "^1.7.2",
+    "webpack-espower-loader": "^0.1.0"
+  },
+  "dependencies": {
+    "fluxxor": "^1.5.2",
+    "react": "^0.12.2",
+    "react-router": "^0.12.4",
+    "typed-react": "^3.3.1"
+  }
+}
