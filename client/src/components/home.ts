@@ -3,7 +3,7 @@ import TypedReact = require("typed-react");
 
 class Spec extends TypedReact.Component<any, any> {
     render() {
-        return React.jsx(`<p>home</p>`);
+        return React.jsx(`<p>Home</p>`);
     }
 };
 

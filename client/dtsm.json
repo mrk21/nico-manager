@@ -25,6 +25,12 @@
     },
     "node/node.d.ts": {
       "ref": "3b2ed809b9e8f7dc4fcc1d80199129a0b73fb277"
+    },
+    "superagent/superagent.d.ts": {
+      "ref": "feb6d404c10c57020758c4e4b1f3939fabf19b42"
+    },
+    "sinon/sinon.d.ts": {
+      "ref": "feb6d404c10c57020758c4e4b1f3939fabf19b42"
     }
   }
 }

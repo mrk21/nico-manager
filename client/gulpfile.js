@@ -155,11 +155,12 @@ gulp.task('test', ['node'], function(){
   var options = {};
   if (args.grep) options.grep = args.grep;
   if (args.watch) {
-    gulp.watch('src/**/*.ts', ['node']);
-    gulp.watch('test/unit/**/*.ts', ['node']);
+    gulp.watch('src/**/*.ts', ['test']);
+    gulp.watch('test/unit/**/*.ts', ['test']);
   }
   
   gulp.src('build/node/test/unit/**/*_test.js')
+    .pipe($.plumber())
     .pipe($.mocha(options))
   ;
 });

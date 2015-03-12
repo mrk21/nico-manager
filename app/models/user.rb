@@ -17,6 +17,7 @@ class User < ActiveRecord::Base
     user = User.create!(niconico_id: session.user_id) if user.nil?
     user.fetch_profile
     user.fetch_mylist
+    user.save
     user
   end
   
