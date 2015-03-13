@@ -31,6 +31,9 @@
     },
     "sinon/sinon.d.ts": {
       "ref": "feb6d404c10c57020758c4e4b1f3939fabf19b42"
+    },
+    "nock/nock.d.ts": {
+      "ref": "c594427c40354eae9dc618c50dc1c3d83da477b5"
     }
   }
 }

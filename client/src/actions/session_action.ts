@@ -2,7 +2,7 @@ import request = require('superagent');
 import Action = require('./base');
 import Api = require('../api');
 
-export class Show extends Action.Base<any> {
+export class Show extends Action.Base<Api.Session | Api.Message> {
     handler() {
         request
             .get('/api/session')

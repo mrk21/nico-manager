@@ -45,12 +45,14 @@
     "minimist": "^1.1.0",
     "mocha": "^2.2.1",
     "nib": "^1.1.0",
+    "nock": "^1.1.0",
     "phantomjs": "^1.9.16",
     "power-assert": "^0.10.2",
     "proxy-middleware": "^0.11.0",
     "react-test-utils": "0.0.1",
     "rev-del": "^1.0.4",
     "rimraf": "^2.3.2",
+    "sinon": "^1.13.0",
     "source-map-support": "^0.2.9",
     "through2": "^0.6.3",
     "ts-jsx-loader": "^0.1.2",
@@ -63,7 +65,6 @@
     "fluxxor": "^1.5.2",
     "react": "^0.12.2",
     "react-router": "^0.12.4",
-    "sinon": "^1.13.0",
     "superagent": "^0.21.0",
     "typed-react": "^3.3.1"
   }

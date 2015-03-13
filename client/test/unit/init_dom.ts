@@ -1,5 +1,5 @@
-import jsdom = require('jsdom');
+var jsdom = require('jsdom').jsdom;
 
-global.document = jsdom.jsdom('<html><body></body></html>');
+global.document = jsdom('<html><body></body></html>');
 global.window = document.parentWindow;
 global.navigator = window.navigator;

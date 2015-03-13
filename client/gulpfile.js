@@ -95,7 +95,7 @@ gulp.task('css', function(){
   ;
 });
 
-gulp.task('node', function(){
+var nodeTask = function(done){
   return gulp.src(['src/**/*.ts', 'test/**/*.ts'], {base: '.'})
     .pipe($.sourcemaps.init())
     .pipe(jsx())
@@ -103,11 +103,23 @@ gulp.task('node', function(){
       module: 'commonjs',
       sourceRoot: __dirname + '/src'
     }))).js
+    .on('error', function(){
+      this.emit('end', true);
+    })
+    .on('end', function(error){
+      if (!error && done) {
+        setTimeout(done, 100);
+      }
+    })
     .pipe($.espower())
     .pipe($.insert.prepend("require('source-map-support').install();"))
     .pipe($.sourcemaps.write('.'))
     .pipe(gulp.dest('build/node'))
   ;
+};
+
+gulp.task('node', function(){
+  return nodeTask();
 });
 
 gulp.task('karma', function(){
@@ -115,7 +127,9 @@ gulp.task('karma', function(){
     .pipe(named())
     .pipe($.webpack(_.merge(webpack_config, {
       plugins: [
-        new webpack.NormalModuleReplacementPlugin(/^.*\/init_dom$/, __dirname + '/test/unit/empty')
+        new webpack.NormalModuleReplacementPlugin(/^.*\/init_dom$/, __dirname + '/test/unit/empty'),
+        new webpack.NormalModuleReplacementPlugin(/^nock$/, __dirname + '/test/unit/empty'),
+        new webpack.NormalModuleReplacementPlugin(/^sinon$/, __dirname + '/test/unit/empty')
       ]
     })))
     .pipe(gulp.dest('build/karma'))
@@ -151,7 +165,7 @@ gulp.task('install', ['js','css'], function(done){
   ;
 });
 
-gulp.task('test', ['node'], function(){
+gulp.task('test', function(){
   var options = {};
   if (args.grep) options.grep = args.grep;
   if (args.watch) {
@@ -159,12 +173,13 @@ gulp.task('test', ['node'], function(){
     gulp.watch('test/unit/**/*.ts', ['test']);
   }
   
-  gulp.src('build/node/test/unit/**/*_test.js')
-    .pipe($.plumber())
-    .pipe($.mocha(options))
-  ;
+  return nodeTask(function(){
+    gulp.src('build/node/test/unit/**/*_test.js')
+      .pipe($.plumber())
+      .pipe($.mocha(options))
+    ;
+  });
 });
-
 
 gulp.task('browser-test', ['karma'], function(){
   var action = 'run';
