@@ -33,6 +33,17 @@ class Spec extends TypedReact.Component<any, State> implements
         };
     }
     
+    componentDidMount() {
+        if (this.state.session.auth == SessionStore.AuthState.AUTHENTICATED) {
+            this.transitionTo("/");
+        }
+    }
+    
+    componentWillUnmount() {
+        this.state.mail = null;
+        this.state.password = null;
+    }
+    
     render() {
         if (this.state.session.auth == SessionStore.AuthState.AUTHENTICATION_FAILED) {
             var message = React.jsx(`<p>invalid</p>`);
@@ -47,17 +58,6 @@ class Spec extends TypedReact.Component<any, State> implements
                 </form>
             </div>
         `);
-    }
-    
-    componentDidMount() {
-        if (this.state.session.auth == SessionStore.AuthState.AUTHENTICATED) {
-            this.transitionTo("/");
-        }
-    }
-    
-    componentWillUnmount() {
-        this.state.mail = null;
-        this.state.password = null;
     }
     
     onChangeMail(e: React.SyntheticEvent) {

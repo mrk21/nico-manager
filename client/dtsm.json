@@ -34,6 +34,9 @@
     },
     "nock/nock.d.ts": {
       "ref": "c594427c40354eae9dc618c50dc1c3d83da477b5"
+    },
+    "jsdom/jsdom.d.ts": {
+      "ref": "a0ee360d4751aa3fc928159d618442e208fd8b23"
     }
   }
 }

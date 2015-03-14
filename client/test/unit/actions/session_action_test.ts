@@ -6,7 +6,7 @@ import sinon = require('sinon');
 import SessionAction = require('../../../src/actions/session_action');
 import Api = require('../../../src/api');
 
-(nock ? describe : describe.skip)('SessionAction', () => {
+(nock ? describe : describe.skip)('stores/session_action', () => {
     afterEach(() => nock.cleanAll());
     
     describe('Show', () => {

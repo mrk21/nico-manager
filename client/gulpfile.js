@@ -112,7 +112,7 @@ var nodeTask = function(done){
       }
     })
     .pipe($.espower())
-    .pipe($.insert.prepend("require('source-map-support').install();"))
+//     .pipe($.insert.prepend("require('source-map-support').install();"))
     .pipe($.sourcemaps.write('.'))
     .pipe(gulp.dest('build/node'))
   ;

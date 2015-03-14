@@ -1,5 +1,9 @@
-var jsdom = require('jsdom').jsdom;
+import jsdom = require('jsdom');
 
-global.document = jsdom('<html><body></body></html>');
-global.window = document.parentWindow;
-global.navigator = window.navigator;
+function init() {
+    global.document = jsdom.jsdom('<html><body></body></html>');
+    global.window = document.defaultView;
+    global.navigator = window.navigator;
+}
+
+export = init;

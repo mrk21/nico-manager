@@ -4,11 +4,11 @@ import React = require('react');
 import Fluxxor = require('fluxxor');
 import Router = require('react-router');
 
-import stores = require('./stores');
-import actions = require('./actions');
+import Stores = require('./stores');
+import Actions = require('./actions');
 import routes = require('./routes');
 
-var flux = new Fluxxor.Flux(stores, actions);
+var flux = new Fluxxor.Flux(new Stores(), new Actions());
 
 flux.on('dispatch', (type: string, payload: any) => {
     console.log(type, payload);
