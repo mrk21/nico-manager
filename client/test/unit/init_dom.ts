@@ -5,5 +5,6 @@ function init() {
     global.window = document.defaultView;
     global.navigator = window.navigator;
 }
+init();
 
 export = init;

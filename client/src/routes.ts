@@ -1,17 +1,22 @@
 import React = require("react");
 import Router = require("react-router");
+import AppComponent = require("./components/app_component");
+import HomeComponent = require("./components/home_component");
+import SessionComponent = require("./components/session_component");
 import Route = Router.Route;
 import DefaultRoute = Router.DefaultRoute;
 
-import App = require("./components/app");
-import Home = require("./components/home");
-import Session = require("./components/session");
+class Routes {
+    root: Route;
+    
+    constructor() {
+        this.root = React.jsx(`
+            <Route handler={AppComponent.ComponentClass} name="root" path="/">
+                <DefaultRoute handler={HomeComponent.ComponentClass} />
+                <Route name="session" handler={SessionComponent.ComponentClass} />
+            </Route>
+        `);
+    }
+};
 
-var routes: Router.Route =  React.jsx(`
-    <Route handler={App} name="root" path="/">
-        <DefaultRoute handler={Home} />
-        <Route name="session" handler={Session.ComponentClass} />
-    </Route>
-`);
-
-export = routes;
+export = Routes;

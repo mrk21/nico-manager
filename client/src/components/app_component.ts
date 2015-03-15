@@ -1,19 +1,18 @@
 import React = require("react");
-import TypedReact = require("typed-react");
 import Router = require("react-router");
-import Fluxxor = require('fluxxor');
+import Base = require('./base');
 import SessionStore = require('../stores/session_store');
 import RouteHandler = Router.RouteHandler;
 import Link = Router.Link;
 
-interface State {
+export interface Props extends Base.Props {}
+
+export interface State extends Base.State {
     session?: SessionStore.State;
     isInitialized?: boolean
 }
 
-class Spec extends TypedReact.Component<any, State> implements Fluxxor.FluxMixin, Fluxxor.StoreWatchMixin<State> {
-    getFlux: () => Fluxxor.Flux;
-    
+export class Spec extends Base.Spec<Props, State> {
     getInitialState() {
         return {
             isInitialized: false
@@ -67,9 +66,6 @@ class Spec extends TypedReact.Component<any, State> implements Fluxxor.FluxMixin
     }
 };
 
-var Component = TypedReact.createClass(Spec, [
-    Fluxxor.FluxMixin(React),
-    Fluxxor.StoreWatchMixin<State>('session')
-]);
+export type Component = React.CompositeComponent<Props, State>;
 
-export = Component;
+export var ComponentClass = Base.createClass(Spec, ['session']);

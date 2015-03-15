@@ -6,21 +6,21 @@ import initDom = require('../init_dom');
 
 import React = require('react/addons');
 import Fluxxor = require('fluxxor');
-import Session = require('../../../src/components/session');
+import SessionComponent = require('../../../src/components/session_component');
 import SessionStore = require('../../../src/stores/session_store');
 import Stores = require('../../../src/stores');
 import Actions = require('../../../src/actions');
 
 var TestUtils = React.addons.TestUtils;
 
-(initDom ? describe : describe.skip)('components/session', () => {
+(initDom ? describe : describe.skip)('components/session_component', () => {
     var actions: Actions;
     var stores: Stores;
-    var component: Session.Component;
+    var component: SessionComponent.Component;
     
     function createComponent(){
-        component = TestUtils.renderIntoDocument<Session.Component>(
-            React.createElement(Session.ComponentClass, {
+        component = TestUtils.renderIntoDocument<SessionComponent.Component>(
+            React.createElement(SessionComponent.ComponentClass, {
                 flux: new Fluxxor.Flux(stores, actions)
             })
         );
