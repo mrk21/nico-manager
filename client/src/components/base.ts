@@ -34,6 +34,8 @@ interface SpecClass<P,S> {
     new (): TypedReact.Component<P,S>;
 }
 
+export interface Component<P,S> extends React.CompositeComponent<P,S> {}
+
 export function createClass<P extends Props, S extends State>(spec: SpecClass<P,S>, watchStores?: string[], mixins?: React.Mixin<P,S>[]) {
     var baseMixins: React.Mixin<P,S>[] = [
         Fluxxor.FluxMixin(React),
@@ -44,7 +46,8 @@ export function createClass<P extends Props, S extends State>(spec: SpecClass<P,
             Fluxxor.StoreWatchMixin.apply(this, watchStores)
         );
     }
-    baseMixins = baseMixins.concat(mixins);
-    
+    if (mixins) {
+        baseMixins = baseMixins.concat(mixins);
+    }
     return TypedReact.createClass(spec, baseMixins);
 };

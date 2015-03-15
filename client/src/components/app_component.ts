@@ -6,7 +6,6 @@ import RouteHandler = Router.RouteHandler;
 import Link = Router.Link;
 
 export interface Props extends Base.Props {}
-
 export interface State extends Base.State {
     session?: SessionStore.State;
     isInitialized?: boolean
@@ -31,7 +30,7 @@ export class Spec extends Base.Spec<Props, State> {
         }
     }
     
-    componentDidMount() {
+    componentWillMount() {
         this.getFlux().actions.session.show();
     }
     
@@ -45,7 +44,7 @@ export class Spec extends Base.Spec<Props, State> {
                     <h1><Link to="/">nico-manager</Link></h1>
                     <p>{this.state.session.user.nickname}</p>
                     <img src={this.state.session.user.avatar} />
-                    <button onClick={this.onSignout}>sign out</button>
+                    <button ref="signOut" onClick={this.onSignout}>sign out</button>
                     <RouteHandler {...this.props} />
                 </div>
             `);
@@ -54,7 +53,7 @@ export class Spec extends Base.Spec<Props, State> {
             return React.jsx(`
                 <div>
                     <h1><Link to="/">nico-manager</Link></h1>
-                    <Link to="session">sign in</Link>
+                    <Link ref="signIn" to="session">sign in</Link>
                     <RouteHandler {...this.props} />
                 </div>
             `);
@@ -66,6 +65,5 @@ export class Spec extends Base.Spec<Props, State> {
     }
 };
 
-export type Component = React.CompositeComponent<Props, State>;
-
-export var ComponentClass = Base.createClass(Spec, ['session']);
+export type Component = Base.Component<Props, State>;
+export var Component = Base.createClass(Spec, ['session']);

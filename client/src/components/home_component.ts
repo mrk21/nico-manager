@@ -10,6 +10,5 @@ export class Spec extends Base.Spec<Props, State> {
     }
 };
 
-export type Component = React.CompositeComponent<Props, State>;
-
-export var ComponentClass = Base.createClass(Spec);
+export type Component = Base.Component<Props, State>;
+export var Component = Base.createClass(Spec);

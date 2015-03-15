@@ -11,9 +11,9 @@ class Routes {
     
     constructor() {
         this.root = React.jsx(`
-            <Route handler={AppComponent.ComponentClass} name="root" path="/">
-                <DefaultRoute handler={HomeComponent.ComponentClass} />
-                <Route name="session" handler={SessionComponent.ComponentClass} />
+            <Route handler={AppComponent.Component} name="root" path="/">
+                <DefaultRoute handler={HomeComponent.Component} />
+                <Route name="session" handler={SessionComponent.Component} />
             </Route>
         `);
     }

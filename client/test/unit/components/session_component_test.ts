@@ -1,5 +1,4 @@
 ///<reference path="../../../src/_reference.d.ts" />
-
 import assert = require("power-assert")
 import sinon = require('sinon');
 import initDom = require('../init_dom');
@@ -20,7 +19,7 @@ var TestUtils = React.addons.TestUtils;
     
     function createComponent(){
         component = TestUtils.renderIntoDocument<SessionComponent.Component>(
-            React.createElement(SessionComponent.ComponentClass, {
+            React.createElement(SessionComponent.Component, {
                 flux: new Fluxxor.Flux(stores, actions)
             })
         );
