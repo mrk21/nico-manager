@@ -4,67 +4,58 @@ import sinon = require('sinon');
 import initDom = require('../init_dom');
 
 import React = require('react/addons');
-import Fluxxor = require('fluxxor');
 import SessionComponent = require('../../../src/components/session_component');
 import SessionStore = require('../../../src/stores/session_store');
-import Stores = require('../../../src/stores');
-import Actions = require('../../../src/actions');
+import Helper = require('./helper');
 
 var TestUtils = React.addons.TestUtils;
 
+class MyHelper extends Helper<SessionComponent.Component> {}
+
 (initDom ? describe : describe.skip)('components/session_component', () => {
-    var actions: Actions;
-    var stores: Stores;
-    var component: SessionComponent.Component;
+    var helper: MyHelper;
+    var helperCallback = (helper: MyHelper) => {}
     
-    function createComponent(){
-        component = TestUtils.renderIntoDocument<SessionComponent.Component>(
-            React.createElement(SessionComponent.Component, {
-                flux: new Fluxxor.Flux(stores, actions)
-            })
-        );
-    }
-    
-    beforeEach(() => {
-        initDom();
-        actions = new Actions();
-        stores = new Stores();
+    beforeEach((done) => {
+        helper = new MyHelper(SessionComponent.Component, done, helperCallback);
     });
     
     context('when submitted', () => {
+        var actionsMock: SinonMock;
+        var auth = {
+            mail: 'hoge@fuga.com',
+            password: 'pass'
+        };
+        
+        before(() => {
+            helperCallback = (helper: MyHelper) => {
+                actionsMock = sinon.mock(helper.actions.session);
+                actionsMock.expects('create').withArgs(auth).once();
+            }
+        });
+        
         it('should invoke session.create action', () => {
-            var auth = {
-                mail: 'hoge@fuga.com',
-                password: 'pass'
-            };
-            var mock = sinon.mock(actions.session);
-            mock.expects('create').withArgs(auth).once();
+            helper.component.state.mail = auth.mail;
+            helper.component.state.password = auth.password;
             
-            createComponent();
-            component.state.mail = auth.mail;
-            component.state.password = auth.password;
-            
-            TestUtils.Simulate.submit(component.refs['form'].getDOMNode());
-            assert(mock.verify());
+            TestUtils.Simulate.submit(helper.component.refs['form'].getDOMNode());
+            assert(actionsMock.verify());
         });
         
         context('when authentication succeed', () => {
             it('should transition to the root', () => {
-                createComponent();
-                (<any>component).transitionTo = () => {};
-                var spy = sinon.spy(component, 'transitionTo');
-                stores.session.state.auth = SessionStore.AuthState.AUTHENTICATED;
-                stores.session.emit('change');
+                var spy = sinon.spy(helper.component, 'transitionTo');
+                helper.stores.session.state.auth = SessionStore.AuthState.AUTHENTICATED;
+                helper.stores.session.emit('change');
                 assert(spy.withArgs('/').calledOnce);
             });
         });
         
         context('when authentication failed', () => {
             it('should display an error message', () => {
-                createComponent();
-                stores.session.state.auth = SessionStore.AuthState.AUTHENTICATION_FAILED;
-                stores.session.emit('change');
-                var errorMessage = component.refs['errorMessage'].getDOMNode<HTMLElement>();
+                helper.stores.session.state.auth = SessionStore.AuthState.AUTHENTICATION_FAILED;
+                helper.stores.session.emit('change');
+                var errorMessage = helper.component.refs['errorMessage'].getDOMNode<HTMLElement>();
                 assert(errorMessage.innerHTML != '');
             });
         });

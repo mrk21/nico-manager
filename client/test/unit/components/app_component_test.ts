@@ -4,109 +4,70 @@ import sinon = require('sinon');
 import initDom = require('../init_dom');
 
 import React = require('react/addons');
-import Fluxxor = require('fluxxor');
 import AppComponent = require('../../../src/components/app_component');
 import SessionStore = require('../../../src/stores/session_store');
-import Stores = require('../../../src/stores');
-import Actions = require('../../../src/actions');
+import Helper = require('./helper');
 
 var TestUtils = React.addons.TestUtils;
 
+class MyHelper extends Helper<AppComponent.Component> {}
+
 (initDom ? describe : describe.skip)('components/app_component', () => {
-    var actions: Actions;
-    var stores: Stores;
-    var component: AppComponent.Component;
+    var helper: MyHelper;
+    var actionsMock: SinonMock;
     
-    function createComponent(done: Function){
-        var context = {
-            makePath: () => {},
-            makeHref: () => {},
-            transitionTo: () => {},
-            replaceWith: () => {},
-            goBack: () => {},
-            
-            getCurrentPath: () => {},
-            getCurrentRoutes: () => {},
-            getCurrentPathname: () => {},
-            getCurrentParams: () => {},
-            getCurrentQuery: () => {},
-            isActive: () => {},
-            
-            getRouteAtDepth: () => {},
-            setRouteComponentAtDepth: () => {},
-            routeHandlers: <any[]>[]
-        };
-        
-        (<any>React).withContext(context, () => {
-            component = TestUtils.renderIntoDocument<AppComponent.Component>(
-                React.createElement(AppComponent.Component, {
-                    flux: new Fluxxor.Flux(stores, actions)
-                })
-            );
-            done();
-        });
+    var helperCallback = (helper: MyHelper) => {
+        actionsMock = sinon.mock(helper.actions.session);
+        actionsMock.expects('show').once();
     }
     
-    var mockConfig = () => {
-        mock.expects('show').once();
-    };
-    
-    beforeEach(() => {
-//         initDom();
-        actions = new Actions();
-        stores = new Stores();
-    });
-    
-    var mock: SinonMock;
-    
     beforeEach((done) => {
-        mock = sinon.mock(actions.session);
-        mockConfig();
-        createComponent(done);
+        helper = new MyHelper(AppComponent.Component, done, helperCallback);
     });
     
     context('when initialized', () => {
         it('should invoke session.show action', () => {
-            assert(mock.verify());
+            assert(actionsMock.verify());
         });
         
         it('should render an empty view', () => {
-            assert(component.getDOMNode<HTMLElement>().innerHTML === '');
+            assert(helper.component.getDOMNode<HTMLElement>().innerHTML === '');
         });
     });
     
     context('when not authenticated', () => {
         beforeEach(() => {
-            stores.session.state.auth = SessionStore.AuthState.NOT_AUTHENTICATED;
-            stores.session.emit('change');
+            helper.stores.session.state.auth = SessionStore.AuthState.NOT_AUTHENTICATED;
+            helper.stores.session.emit('change');
         });
         
         it('should exist a sign-in link', () => {
-            assert(component.refs['signIn'] !== undefined);
+            assert(helper.component.refs['signIn'] !== undefined);
         });
     });
     
     context('when authenticated', () => {
         beforeEach(() => {
-            stores.session.state.auth = SessionStore.AuthState.AUTHENTICATED;
-            stores.session.emit('change');
+            helper.stores.session.state.auth = SessionStore.AuthState.AUTHENTICATED;
+            helper.stores.session.emit('change');
         });
         
         it('should exist a sign-out button', () => {
-            assert(component.refs['signOut'] !== undefined);
+            assert(helper.component.refs['signOut'] !== undefined);
         });
         
         context('when authentication abrogated', () => {
             before(() => {
-                mockConfig = () => {
-                    mock.expects('show').once();
-                    mock.expects('destroy').once();
-                };
+                helperCallback = (helper) => {
+                    actionsMock = sinon.mock(helper.actions.session);
+                    actionsMock.expects('show').once();
+                    actionsMock.expects('destroy').once();
+                }
             });
             
             it('should invoke session.destroy action', () => {
-                TestUtils.Simulate.click(component.refs['signOut'].getDOMNode());
-                assert(mock.verify());
+                TestUtils.Simulate.click(helper.component.refs['signOut'].getDOMNode());
+                assert(actionsMock.verify());
             });
         });
     });
