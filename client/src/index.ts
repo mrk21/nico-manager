@@ -12,7 +12,7 @@ var flux = new Fluxxor.Flux(new Stores(), new Actions());
 
 flux.on('dispatch', (type: string, payload: any) => {
     console.log(type, payload);
-})
+});
 
 Router.run(routes, (Handler) => {
     React.render(React.jsx(`<Handler flux={flux} />`), document.getElementById("app"));

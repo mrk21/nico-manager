@@ -1,7 +1,7 @@
 import SessionStore = require('./stores/session_store');
 
 class Stores {
-    SessionStore = new SessionStore.Store();
+    session = new SessionStore.Store();
 };
 
 export = Stores;

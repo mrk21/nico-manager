@@ -1,9 +1,9 @@
 import React = require("react");
 import TypedReact = require("typed-react");
 import Router = require("react-router");
-import RouteHandler = Router.RouteHandler;
 import Fluxxor = require('fluxxor');
 import SessionStore = require('../stores/session_store');
+import RouteHandler = Router.RouteHandler;
 import Link = Router.Link;
 
 interface State {
@@ -22,7 +22,7 @@ class Spec extends TypedReact.Component<any, State> implements Fluxxor.FluxMixin
     
     getStateFromFlux() {
         return {
-            session: this.getFlux().store('SessionStore').state
+            session: this.getFlux().store('session').state
         };
     }
     
@@ -69,7 +69,7 @@ class Spec extends TypedReact.Component<any, State> implements Fluxxor.FluxMixin
 
 var Component = TypedReact.createClass(Spec, [
     Fluxxor.FluxMixin(React),
-    Fluxxor.StoreWatchMixin<State>('SessionStore')
+    Fluxxor.StoreWatchMixin<State>('session')
 ]);
 
 export = Component;

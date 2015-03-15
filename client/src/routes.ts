@@ -10,7 +10,7 @@ import Session = require("./components/session");
 var routes: Router.Route =  React.jsx(`
     <Route handler={App} name="root" path="/">
         <DefaultRoute handler={Home} />
-        <Route name="session" handler={Session} />
+        <Route name="session" handler={Session.ComponentClass} />
     </Route>
 `);
 

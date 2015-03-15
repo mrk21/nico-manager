@@ -4,24 +4,31 @@ import Fluxxor = require('fluxxor');
 import Router = require('react-router');
 import SessionStore = require('../stores/session_store');
 
-interface State {
+export interface Prop {
+    flux: Fluxxor.Flux;
+}
+
+export interface State {
     session?: SessionStore.State;
     mail?: string;
     password?: string;
 }
 
-class Spec extends TypedReact.Component<any, State> implements
+export class Spec extends TypedReact.Component<Prop, State> implements
     Fluxxor.FluxMixin,
     Fluxxor.StoreWatchMixin<State>,
     Router.Navigation
 {
+    // Fluxxor Mixin
     getFlux: () => Fluxxor.Flux;
     
+    // Navigation Mixin
     makePath: (to: string, params?: {}, query?: {}) => string;
     makeHref: (to: string, params?: {}, query?: {}) => string;
     transitionTo: (to: string, params?: {}, query?: {}) => void;
     replaceWith: (to: string, params?: {}, query?: {}) => void;
     goBack: () => void;
+    
     
     getInitialState() {
         return {};
@@ -29,14 +36,8 @@ class Spec extends TypedReact.Component<any, State> implements
     
     getStateFromFlux() {
         return {
-            session: this.getFlux().store('SessionStore').state
+            session: this.getFlux().store('session').state
         };
-    }
-    
-    componentDidMount() {
-        if (this.state.session.auth == SessionStore.AuthState.AUTHENTICATED) {
-            this.transitionTo("/");
-        }
     }
     
     componentWillUnmount() {
@@ -45,13 +46,16 @@ class Spec extends TypedReact.Component<any, State> implements
     }
     
     render() {
+        if (this.state.session.auth == SessionStore.AuthState.AUTHENTICATED) {
+            this.transitionTo("/");
+        }
         if (this.state.session.auth == SessionStore.AuthState.AUTHENTICATION_FAILED) {
-            var message = React.jsx(`<p>invalid</p>`);
+            var message = 'invalid';
         }
         return React.jsx(`
             <div>
-                {message}
-                <form onSubmit={this.onSubmit}>
+                <p ref="errorMessage">{message}</p>
+                <form ref="form" onSubmit={this.onSubmit}>
                     <input type="text" value={this.state.mail} onChange={this.onChangeMail} />
                     <input type="password" value={this.state.password} onChange={this.onChangePassword} />
                     <input type="submit" value="sign in" />
@@ -76,10 +80,10 @@ class Spec extends TypedReact.Component<any, State> implements
     }
 };
 
-var Component = TypedReact.createClass(Spec, [
+export type Component = React.CompositeComponent<Prop, State>;
+
+export var ComponentClass = TypedReact.createClass(Spec, [
     Fluxxor.FluxMixin(React),
-    Fluxxor.StoreWatchMixin<State>('SessionStore'),
+    Fluxxor.StoreWatchMixin<State>('session'),
     Router.Navigation
 ]);
-
-export = Component;
