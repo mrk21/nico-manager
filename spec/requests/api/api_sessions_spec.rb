@@ -35,7 +35,7 @@ RSpec.describe "Api::Sessions", type: :request do
       define_authenticated_stub {}
       
       it 'should be an error response' do
-        is_expected.to eq 400
+        is_expected.to eq 401
         expect(body).to be_json_eql('Authentication failed'.to_json).at_path('message')
       end
     end

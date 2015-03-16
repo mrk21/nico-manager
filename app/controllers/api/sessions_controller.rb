@@ -10,7 +10,7 @@ class Api::SessionsController < ApplicationController
       render action: :show
     else
       session[:user_id] = nil
-      render action: :create_error, status: 400
+      render action: :create_error, status: 401
     end
   end
   

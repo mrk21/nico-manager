@@ -30,7 +30,7 @@ RSpec.describe ApplicationController, type: :controller do
     context 'when not logged in' do
       let(:user){ FactoryGirl.build :user }
       
-      it { is_expected.to have_http_status 400 }
+      it { is_expected.to have_http_status 401 }
       it { is_expected.to render_template :require_authentication_error }
       
       it 'should not set current user' do

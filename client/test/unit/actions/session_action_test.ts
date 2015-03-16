@@ -37,7 +37,7 @@ import Api = require('../../../src/api');
         context('when not authenticated', () => {
             before(() => {
                 response = {
-                    status: 400,
+                    status: 401,
                     body: <any>{
                         message: 'Not authenticated'
                     }
@@ -88,7 +88,7 @@ import Api = require('../../../src/api');
         context('when authentication failed', () => {
             before(() => {
                 response = {
-                    status: 400,
+                    status: 401,
                     body: <any>{
                         message: 'Authentication failed'
                     }

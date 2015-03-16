@@ -1,5 +1,4 @@
 import FluxxorStore = require('fluxxor/lib/store');
-import request = require('superagent');
 import Api = require('../api');
 
 export enum AuthState {

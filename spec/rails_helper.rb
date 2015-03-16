@@ -44,7 +44,7 @@ module RequestMacros
       
       context 'without authentication' do
         it 'should be error response' do
-          is_expected.to eq 400
+          is_expected.to eq 401
           expect(body).to be_json_eql('Authentication error'.to_json).at_path('message')
         end
       end

@@ -12,3 +12,9 @@ export class SessionAuth {
     mail: string;
     password: string;
 }
+
+export class EntryListItem {
+    video_id: string;
+    title: string;
+    thumbnail_url: string;
+}

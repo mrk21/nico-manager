@@ -25,7 +25,7 @@ class MyHelper extends Helper<AppComponent.Component> {}
         helper = new MyHelper(AppComponent.Component, done, helperCallback);
     });
     
-    context('when initialized', () => {
+    context('when mounted', () => {
         it('should invoke session.show action', () => {
             assert(actionsMock.verify());
         });
