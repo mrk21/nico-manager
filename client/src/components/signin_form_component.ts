@@ -3,7 +3,6 @@ import Base = require('./base');
 import SessionStore = require('../stores/session_store');
 
 export interface Props extends Base.Props {}
-
 export interface State extends Base.State {
     session?: SessionStore.State;
     mail?: string;
@@ -12,7 +11,10 @@ export interface State extends Base.State {
 
 export class Spec extends Base.Spec<Props, State> {
     getInitialState() {
-        return {};
+        return {
+            mail: '',
+            password: ''
+        };
     }
     
     getStateFromFlux() {
@@ -22,26 +24,29 @@ export class Spec extends Base.Spec<Props, State> {
     }
     
     componentWillUnmount() {
-        this.state.mail = null;
-        this.state.password = null;
+        this.state.mail = '';
+        this.state.password = '';
     }
     
     render() {
-        if (this.state.session.auth == SessionStore.AuthState.AUTHENTICATED) {
-            this.transitionTo("/");
-        }
         if (this.state.session.auth == SessionStore.AuthState.AUTHENTICATION_FAILED) {
-            var message = 'invalid';
+            var errorMessage = React.jsx(`
+                <p className="signin__error" ref="errorMessage">sign-in failed</p>
+            `);
         }
         return React.jsx(`
-            <div>
-                <p ref="errorMessage">{message}</p>
-                <form ref="form" onSubmit={this.onSubmit}>
-                    <input type="text" value={this.state.mail} onChange={this.onChangeMail} />
-                    <input type="password" value={this.state.password} onChange={this.onChangePassword} />
-                    <input type="submit" value="sign in" />
-                </form>
-            </div>
+            <form className="signin__form" onSubmit={this.onSubmit}>
+                {errorMessage}
+                <input type="text"
+                    placeholder="mail"
+                    value={this.state.mail}
+                    onChange={this.onChangeMail} />
+                <input type="password"
+                    placeholder="password"
+                    value={this.state.password}
+                    onChange={this.onChangePassword} />
+                <input type="submit" value="sign in" />
+            </form>
         `);
     }
     
@@ -59,7 +64,7 @@ export class Spec extends Base.Spec<Props, State> {
             password: this.state.password
         });
     }
-};
+}
 
 export type Component = Base.Component<Props, State>;
 export var Component = Base.createClass(Spec, ['session']);

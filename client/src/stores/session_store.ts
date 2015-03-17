@@ -2,6 +2,7 @@ import FluxxorStore = require('fluxxor/lib/store');
 import Api = require('../api');
 
 export enum AuthState {
+    NOT_INITIALIZED,
     NOT_AUTHENTICATED,
     AUTHENTICATED,
     AUTHENTICATION_FAILED
@@ -9,7 +10,7 @@ export enum AuthState {
 
 export class State {
     user = new Api.Session;
-    auth: AuthState = AuthState.NOT_AUTHENTICATED;
+    auth: AuthState = AuthState.NOT_INITIALIZED;
 }
 
 export class Store extends FluxxorStore {

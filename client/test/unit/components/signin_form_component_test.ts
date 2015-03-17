@@ -4,20 +4,20 @@ import sinon = require('sinon');
 import initDom = require('../init_dom');
 
 import React = require('react/addons');
-import SessionComponent = require('../../../src/components/session_component');
+import SigninFormComponent = require('../../../src/components/signin_form_component');
 import SessionStore = require('../../../src/stores/session_store');
 import Helper = require('./helper');
 
 var TestUtils = React.addons.TestUtils;
 
-class MyHelper extends Helper<SessionComponent.Component> {}
+class MyHelper extends Helper<SigninFormComponent.Component> {}
 
-(initDom ? describe : describe.skip)('components/session_component', () => {
+(initDom ? describe : describe.skip)('components/signin_form_component', () => {
     var helper: MyHelper;
     var helperCallback = (helper: MyHelper) => {}
     
     beforeEach((done) => {
-        helper = new MyHelper(SessionComponent.Component, done, helperCallback);
+        helper = new MyHelper(SigninFormComponent.Component, done, helperCallback);
     });
     
     context('when submitted', () => {
@@ -38,25 +38,15 @@ class MyHelper extends Helper<SessionComponent.Component> {}
             helper.component.state.mail = auth.mail;
             helper.component.state.password = auth.password;
             
-            TestUtils.Simulate.submit(helper.component.refs['form'].getDOMNode());
+            TestUtils.Simulate.submit(helper.component.getDOMNode());
             assert(actionsMock.verify());
         });
         
-        context('when authentication succeed', () => {
-            it('should transition to the root', () => {
-                var spy = sinon.spy(helper.component, 'transitionTo');
-                helper.stores.session.state.auth = SessionStore.AuthState.AUTHENTICATED;
-                helper.stores.session.emit('change');
-                assert(spy.withArgs('/').calledOnce);
-            });
-        });
-        
         context('when authentication failed', () => {
-            it('should display an error message', () => {
+            it('should exist an error message', () => {
                 helper.stores.session.state.auth = SessionStore.AuthState.AUTHENTICATION_FAILED;
                 helper.stores.session.emit('change');
-                var errorMessage = helper.component.refs['errorMessage'].getDOMNode<HTMLElement>();
-                assert(errorMessage.innerHTML != '');
+                assert(helper.component.refs['errorMessage'] !== undefined);
             });
         });
     });

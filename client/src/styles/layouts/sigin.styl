@@ -1,0 +1,68 @@
+.signin {
+  self = selector();
+  
+  display: flex;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  
+  /{self}__wrapper {
+    position: relative;
+    top: -100px;
+    width: 400px;
+    padding: 100px 0;
+    margin: auto;
+    
+    h1 {
+      margin: 0;
+      font-family: "Sansita One";
+      font-style: normal;
+      font-weight: 400;
+      letter-spacing: -1px;
+      line-height: 3.5;
+      font-size: 30px;
+      text-align: center;
+      color: #888;
+    }
+    
+    /{self}__form {
+      tb-padding = 35px;
+      lr-padding = 30px;
+      input-margin = 23px;
+      
+      display: block;
+      padding: (tb-padding) (lr-padding);
+      
+      background-color: #EDEFF1;
+      box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+      
+      /{self}__error {
+        margin-top: -(tb-padding);
+        margin-bottom: (tb-padding);
+        margin-left: -(lr-padding);
+        margin-right: -(lr-padding);
+        padding: 15px (lr-padding);
+        
+        font-size: 18px;
+        color: #fff;
+        
+        background-color: #F84A4A;
+      }
+      
+      input {
+        width: 100%;
+        margin: 0;
+        
+        &:not(:last-child) {
+          margin-bottom: (input-margin);
+        }
+        
+        &[type=submit] {
+          text-transform: capitalize;
+        }
+      }
+    }
+  }
+}

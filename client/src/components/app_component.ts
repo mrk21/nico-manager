@@ -2,32 +2,20 @@ import React = require("react");
 import Router = require("react-router");
 import Base = require('./base');
 import SessionStore = require('../stores/session_store');
+import SigninFormComponent = require('./signin_form_component');
 import RouteHandler = Router.RouteHandler;
 import Link = Router.Link;
 
 export interface Props extends Base.Props {}
 export interface State extends Base.State {
     session?: SessionStore.State;
-    isInitialized?: boolean
 }
 
 export class Spec extends Base.Spec<Props, State> {
-    getInitialState() {
-        return {
-            isInitialized: false
-        };
-    }
-    
     getStateFromFlux() {
         return {
             session: this.getFlux().store('session').state
         };
-    }
-    
-    componentDidUpdate() {
-        if (!this.state.isInitialized) {
-            this.setState({isInitialized: true});
-        }
     }
     
     componentWillMount() {
@@ -35,27 +23,33 @@ export class Spec extends Base.Spec<Props, State> {
     }
     
     render() {
-        if (!this.state.isInitialized) {
-            return React.jsx(`<div></div>`);
-        }
-        else if (this.state.session.auth == SessionStore.AuthState.AUTHENTICATED) {
+        switch (this.state.session.auth) {
+        case SessionStore.AuthState.NOT_INITIALIZED:
+            return React.jsx(`<article className="app not-initialized" />`);
+            
+        case SessionStore.AuthState.AUTHENTICATED:
             return React.jsx(`
-                <div>
-                    <h1><Link to="/">nico-manager</Link></h1>
-                    <p>{this.state.session.user.nickname}</p>
-                    <img src={this.state.session.user.avatar} />
-                    <button ref="signOut" onClick={this.onSignout}>sign out</button>
+                <article className="app authenticated">
+                    <header>
+                        <h1><Link to="/">nico-manager</Link></h1>
+                        <p>{this.state.session.user.nickname}</p>
+                        <img src={this.state.session.user.avatar} />
+                        <button ref="signout" onClick={this.onSignout}>sign out</button>
+                    </header>
+                    
                     <RouteHandler {...this.props} />
-                </div>
+                </article>
             `);
-        }
-        else {
+            
+        default:
+            var SigninForm = SigninFormComponent.Component;
             return React.jsx(`
-                <div>
-                    <h1><Link to="/">nico-manager</Link></h1>
-                    <Link ref="signIn" to="session">sign in</Link>
-                    <RouteHandler {...this.props} />
-                </div>
+                <article className="signin">
+                    <div className="signin__wrapper">
+                        <h1>nico-manager</h1>
+                        <SigninForm ref="signIn" {...this.props} />
+                    </div>
+                </article>
             `);
         }
     }
@@ -63,7 +57,7 @@ export class Spec extends Base.Spec<Props, State> {
     onSignout() {
         this.getFlux().actions.session.destroy();
     }
-};
+}
 
 export type Component = Base.Component<Props, State>;
 export var Component = Base.createClass(Spec, ['session']);
