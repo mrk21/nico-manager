@@ -6,6 +6,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'nokogiri'
+gem 'migration_comments'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -19,6 +20,7 @@ gem 'nokogiri'
 group :development, :test do
   gem 'byebug'
   gem 'web-console', '~> 2.0'
+  gem 'squasher'
   
   gem 'guard-rspec'
   gem 'spring'
@@ -28,9 +30,9 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'rspec-request_describer'
   gem 'json_spec'
-  gem 'database_rewinder'
 end
 
 group :test do
   gem 'webmock'
+  gem 'database_rewinder'
 end

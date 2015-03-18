@@ -11,6 +11,7 @@ Bundler.require(*Rails.groups)
 
 module NicoManager
   class Application < Rails::Application
+    config.time_zone = 'Tokyo'
     config.active_record.raise_in_transactional_callbacks = true
     config.action_controller.action_on_unpermitted_parameters = :raise
     

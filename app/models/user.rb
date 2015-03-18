@@ -46,12 +46,30 @@ class User < ActiveRecord::Base
     
     Mylist.create(
       user_id: self.id,
-      group_id: nil,
+      
       entries_attributes: list.map{|entry| {
+        item_type: entry['item_type'],
+        item_id: entry['item_id'],
+        created_time: Time.at(entry['create_time'].to_i),
+        updated_time: Time.at(entry['update_time'].to_i),
+        description: entry['description'],
+        
         video_attributes: {
-          video_id: entry['item_data']['video_id'],
-          title: entry['item_data']['title'],
-          thumbnail_url: entry['item_data']['thumbnail_url']
+          video_id:       entry['item_data']['video_id'],
+          title:          entry['item_data']['title'],
+          thumbnail_url:  entry['item_data']['thumbnail_url'],
+          
+          group_type:     entry['item_data']['group_type'],
+          watch_id:       entry['item_data']['watch_id'],
+          is_deleting:    entry['item_data']['deleted'].to_i != 0,
+          created_time:   Time.at(entry['item_data']['first_retrieve'].to_i),
+          updated_time:   Time.at(entry['item_data']['update_time'].to_i),
+          
+          play_count:     entry['item_data']['view_counter'].to_i,
+          mylist_count:   entry['item_data']['mylist_counter'].to_i,
+          comment_count:  entry['item_data']['num_res'].to_i,
+          seconds:        entry['item_data']['length_seconds'].to_i,
+          latest_comment: entry['item_data']['last_res_body'],
         }
       }}
     )

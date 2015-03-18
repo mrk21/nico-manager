@@ -12,7 +12,6 @@
 !/log/.keep
 /tmp
 
-Gemfile.lock
 **/vendor/bundle/
 
 # Ignore generated client files
