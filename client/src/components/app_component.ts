@@ -25,19 +25,29 @@ export class Spec extends Base.Spec<Props, State> {
     render() {
         switch (this.state.session.auth) {
         case SessionStore.AuthState.NOT_INITIALIZED:
-            return React.jsx(`<article className="app not-initialized" />`);
+            return React.jsx(`<article />`);
             
         case SessionStore.AuthState.AUTHENTICATED:
             return React.jsx(`
-                <article className="app authenticated">
-                    <header>
-                        <h1><Link to="/">nico-manager</Link></h1>
-                        <p>{this.state.session.user.nickname}</p>
-                        <img src={this.state.session.user.avatar} />
-                        <button ref="signout" onClick={this.onSignout}>sign out</button>
+                <article className="page">
+                    <header className="page__header">
+                        <div className="page__header-content">
+                            <h1><Link to="/">nico-manager</Link></h1>
+                            <div className="page__user">
+                                <section className="page__user-info">
+                                    <img src={this.state.session.user.avatar} />
+                                    <p>{this.state.session.user.nickname}</p>
+                                </section>
+                                <menu className="page__user-menu">
+                                   <li><button ref="signOut" onClick={this.onSignout}>sign out</button></li>
+                                </menu>
+                            </div>
+                        </div>
                     </header>
                     
-                    <RouteHandler {...this.props} />
+                    <section className="page__body">
+                        <RouteHandler {...this.props} />
+                    </section>
                 </article>
             `);
             

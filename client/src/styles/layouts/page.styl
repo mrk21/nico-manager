@@ -1,0 +1,144 @@
+.page {
+  self = selector();
+  content_width = 900px;
+  
+  /{self}__header {
+    header-background-color = #48C9B0;
+    background-color: (header-background-color);
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    
+    /{self}__header-content {
+      header-height = 35px;
+      
+      position: relative;
+      width: (content_width);
+      margin: 0 auto;
+      line-height: (header-height);
+      color: #fff;
+      
+      h1 {
+        margin: 0;
+        font-family: "Sansita One";
+        font-style: normal;
+        font-weight: 400;
+        letter-spacing: -1px;
+        font-size: 20px;
+        
+        a {
+          text-decoration: none;
+          color: inherit;
+        }
+      }
+      
+      /{self}__user {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: (header-height);
+        
+        &:after {
+          position: absolute;
+          z-index: 2;
+          top: 0;
+          right: 12px;
+          transform: rotate(0deg);
+          transition: transform 0.2s ease;
+          opacity: 0.8;
+          content: '▼';
+          font-size: 10px;
+        }
+        
+        /{self}__user-info {
+          position: relative;
+          z-index: 2;
+          height: (header-height);
+          padding: 0;
+          padding-left: 15px;
+          padding-right: 30px;
+          background-color: (header-background-color);
+          transition: background-color 0.2s ease;
+          
+          img {
+            position: relative;
+            top: -1px;
+            display: inline-block;
+            vertical-align: middle;
+            width: 24px;
+            height: 24px;
+            border-radius: 12px;
+            margin-right: 7px;
+          }
+          
+          p {
+            position: relative;
+            top: -2px;
+            display: inline-block;
+            vertical-align: middle;
+            font-weight: 300;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            margin: 0;
+          }
+        }
+        
+        /{self}__user-menu {
+          position: absolute;
+          z-index: 1;
+          top: 0;
+          right: 0;
+          left: 0;
+          margin: 0;
+          padding: 0;
+          padding-top: (header-height);
+          transform: translate(0, -100%);
+          transition: transform 0.2s ease;
+          
+          li {
+            background-color: darken(header-background-color, 10%);
+            display: block;
+            line-height: 1.7;
+            padding: 0;
+            margin: 0;
+            
+            button {
+              display: block;
+              padding: 5px 15px;
+              width: 100%;
+              font-size: 14px;
+              font-weight: 300;
+              text-align: left;
+              text-transform: capitalize;
+              transition: background-color 0.2s ease;
+              
+              &:hover {
+                background-color: darken(header-background-color, 20%);
+              }
+            }
+          }
+        }
+        
+        /{self}__user:hover {
+          &:after {
+            transform: rotate(180deg);
+          }
+          
+          {self}__user-info {
+            background-color: darken(header-background-color, 10%);
+          }
+          
+          {self}__user-menu {
+            transform: translate(0,0);
+            background-color: darken(header-background-color, 10%);
+            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+          }
+        }
+      }
+    }
+  }
+  
+  /{self}__body {
+    width: (content_width);
+    margin: 0 auto;
+  }
+}
