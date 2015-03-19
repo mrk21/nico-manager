@@ -96,5 +96,23 @@ RSpec.describe User, type: :model do
     it 'should create videos' do
       expect(Video.all.map{|r| r.dup.attributes}).to eq [self.video.attributes]
     end
+    
+    context 'when updating entries of the mylist' do
+      let(:video_2){ FactoryGirl.build :video_2 }
+      let(:data_2){ JSON.parse(File.read('spec/fixtures/nico_api_deflist/ok_2.json'))['mylistitem'] }
+      
+      before do
+        allow_any_instance_of(NicoApi::Deflist).to receive_messages(list: self.data_2)
+        self.mylist.user.fetch_mylist
+      end
+      
+      it 'should create mylist' do
+        expect(Mylist.all.map{|r| r.dup.attributes}).to eq [self.mylist.attributes]
+      end
+      
+      it 'should create videos' do
+        expect(Video.all.map{|r| r.dup.attributes}).to eq [self.video.attributes, self.video_2.attributes]
+      end
+    end
   end
 end

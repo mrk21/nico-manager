@@ -44,9 +44,9 @@ class User < ActiveRecord::Base
   def fetch_mylist
     list = NicoApi::Deflist.new(self.session).list
     
-    Mylist.create(
-      user_id: self.id,
-      
+    mylist = Mylist.find_by(user_id: self.id, group_id: nil)
+    mylist = Mylist.create(user_id: self.id) if mylist.nil?
+    mylist.update(
       entries_attributes: list.map{|entry| {
         item_type: entry['item_type'],
         item_id: entry['item_id'],
