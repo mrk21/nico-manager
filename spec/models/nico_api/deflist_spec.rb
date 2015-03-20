@@ -6,17 +6,17 @@ RSpec.describe NicoApi::Deflist, type: :model do
     let(:json){ File.read('spec/fixtures/nico_api_mylist/ok.json') }
     
     before do
-      stub_request(:get, 'http://www.nicovideo.jp/api/mylistgroup/list')
+      stub_request(:get, 'http://www.nicovideo.jp/api/deflist/list')
         .with(headers: {
           'Cookie'=> self.session.cookie
         })
         .to_return(status: 200, body: json)
     end
     
-    subject { NicoApi::MylistGroup.new(self.session).list }
+    subject { NicoApi::Deflist.new(self.session).list }
     
     it 'should be mylist items' do
-      is_expected.to eq JSON.parse(self.json)['mylistgroup']
+      is_expected.to eq JSON.parse(self.json)['mylistitem']
     end
     
     context 'when occured errors' do
