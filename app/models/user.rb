@@ -42,10 +42,58 @@ class User < ActiveRecord::Base
   end
   
   def fetch_mylist
+    save_entries = lambda do |mylist, entries|
+      entries.to_a.each do |entry|
+        video_attributes = {
+          video_id:       entry['item_data']['video_id'],
+          title:          entry['item_data']['title'],
+          thumbnail_url:  entry['item_data']['thumbnail_url'],
+          
+          group_type:     entry['item_data']['group_type'],
+          watch_id:       entry['item_data']['watch_id'],
+          is_deleting:    entry['item_data']['deleted'].to_i != 0,
+          created_time:   Time.at(entry['item_data']['first_retrieve'].to_i),
+          updated_time:   Time.at(entry['item_data']['update_time'].to_i),
+          
+          play_count:     entry['item_data']['view_counter'].to_i,
+          mylist_count:   entry['item_data']['mylist_counter'].to_i,
+          comment_count:  entry['item_data']['num_res'].to_i,
+          seconds:        entry['item_data']['length_seconds'].to_i,
+          latest_comment: entry['item_data']['last_res_body'],
+        }
+        video = Video.find_by(video_id: entry['item_data']['video_id'])
+        
+        if video.nil? then
+          video = Video.create(video_attributes)
+        else
+          video.update(video_attributes)
+        end
+        
+        entry_attributes = {
+          mylist_id: mylist.id,
+          video_id: video.id,
+          
+          item_type: entry['item_type'],
+          item_id: entry['item_id'],
+          created_time: Time.at(entry['create_time'].to_i),
+          updated_time: Time.at(entry['update_time'].to_i),
+          description: entry['description'],
+        }
+        entry = Entry.find_by(mylist_id: mylist.id, video_id: video.id)
+        
+        if entry.nil? then
+          entry = Entry.create(entry_attributes)
+        else
+          entry.update(entry_attributes)
+        end
+      end
+    end
+    
     mylist = Mylist.find_by(user_id: self.id, group_id: nil)
     mylist = Mylist.create(user_id: self.id, group_id: nil) if mylist.nil?
+    save_entries[mylist, NicoApi::Deflist.new(self.session).list]
     
-    mylist_group_list = NicoApi::MylistGroup.new(self.session).list
+    mylist_group_list = NicoApi::MylistGroup.new(self.session).list.to_a
     mylist_group_list.each do |group|
       group_attributes = {
         group_id: group['id'].to_i,
@@ -64,52 +112,8 @@ class User < ActiveRecord::Base
       else
         mylist.update(group_attributes)
       end
-    end
-    
-    list = NicoApi::Deflist.new(self.session).list
-    list.each do |entry|
-      video_attributes = {
-        video_id:       entry['item_data']['video_id'],
-        title:          entry['item_data']['title'],
-        thumbnail_url:  entry['item_data']['thumbnail_url'],
-        
-        group_type:     entry['item_data']['group_type'],
-        watch_id:       entry['item_data']['watch_id'],
-        is_deleting:    entry['item_data']['deleted'].to_i != 0,
-        created_time:   Time.at(entry['item_data']['first_retrieve'].to_i),
-        updated_time:   Time.at(entry['item_data']['update_time'].to_i),
-        
-        play_count:     entry['item_data']['view_counter'].to_i,
-        mylist_count:   entry['item_data']['mylist_counter'].to_i,
-        comment_count:  entry['item_data']['num_res'].to_i,
-        seconds:        entry['item_data']['length_seconds'].to_i,
-        latest_comment: entry['item_data']['last_res_body'],
-      }
-      video = Video.find_by(video_id: entry['item_data']['video_id'])
       
-      if video.nil? then
-        video = Video.create(video_attributes)
-      else
-        video.update(video_attributes)
-      end
-      
-      entry_attributes = {
-        mylist_id: mylist.id,
-        video_id: video.id,
-        
-        item_type: entry['item_type'],
-        item_id: entry['item_id'],
-        created_time: Time.at(entry['create_time'].to_i),
-        updated_time: Time.at(entry['update_time'].to_i),
-        description: entry['description'],
-      }
-      entry = Entry.find_by(mylist_id: mylist.id, video_id: video.id)
-      
-      if entry.nil? then
-        entry = Entry.create(entry_attributes)
-      else
-        entry.update(entry_attributes)
-      end
+      save_entries[mylist, NicoApi::Mylist.new(self.session, mylist.group_id).list]
     end
   end
 end

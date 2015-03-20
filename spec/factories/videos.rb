@@ -30,4 +30,20 @@ FactoryGirl.define do
     seconds 119
     latest_comment "タグのそっと、永遠に 最後にもう一度見てお うP... "
   end
+  
+  factory :video_3, class: 'Video' do
+    video_id "so23335421"
+    title "ご注文はうさぎですか？　第1羽「ひと目で、尋常でないもふもふだと見抜いたよ」"
+    thumbnail_url "http://tn-skr2.smilevideo.jp/smile?i=23335421"
+    group_type "community"
+    watch_id "1397552685"
+    is_deleting false
+    created_time Time.at(1397617200)
+    updated_time Time.at(1426862067)
+    play_count 3473043
+    mylist_count 104204
+    comment_count 724260
+    seconds 1417
+    latest_comment "どうせみんないなくな 重要無形文化財 そしてでかい(確信) ※通貨は日本円です にゃーっ... "
+  end
 end

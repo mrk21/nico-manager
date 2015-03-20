@@ -81,43 +81,60 @@ RSpec.describe User, type: :model do
   
   describe '#fetch_mylist()' do
     let(:mylist){ FactoryGirl.build :mylist }
-    let(:mylist_2){ FactoryGirl.build :mylist_2 }
     let(:user) { self.mylist.user }
     let(:video){ FactoryGirl.build :video }
     let(:deflist_data){ JSON.parse(File.read('spec/fixtures/nico_api_deflist/ok.json'))['mylistitem'] }
-    let(:mylistgroup_data){ JSON.parse(File.read('spec/fixtures/nico_api_mylist_group/ok.json'))['mylistgroup'] }
+    let(:mylistgroup_data){}
+    let(:mylist_data){}
     
     before do
       allow_any_instance_of(NicoApi::Deflist).to receive_messages(list: self.deflist_data)
       allow_any_instance_of(NicoApi::MylistGroup).to receive_messages(list: self.mylistgroup_data)
+      allow_any_instance_of(NicoApi::Mylist).to receive_messages(list: self.mylist_data)
       self.user.fetch_mylist
     end
     
     it 'should create mylist' do
-      expect(Mylist.all.map{|r| r.dup.attributes}).to eq [
-        self.mylist.attributes,
-        self.mylist_2.attributes
-      ]
+      expect(Mylist.all.map{|r| r.dup.attributes}).to eq [self.mylist.attributes]
     end
     
     it 'should create videos' do
       expect(Video.all.map{|r| r.dup.attributes}).to eq [self.video.attributes]
     end
     
-    context 'when updating entries of the mylist' do
-      let(:video_2){ FactoryGirl.build :video_2 }
-      let(:data_2){ JSON.parse(File.read('spec/fixtures/nico_api_deflist/ok_2.json'))['mylistitem'] }
+    context 'with other mylist' do
+      let(:mylist_2){ FactoryGirl.build :mylist_2 }
+      let(:video_3){ FactoryGirl.build :video_3 }
       
-      before do
-        allow_any_instance_of(NicoApi::Deflist).to receive_messages(list: self.data_2)
-        self.user.fetch_mylist
-      end
+      let(:mylistgroup_data){ JSON.parse(File.read('spec/fixtures/nico_api_mylist_group/ok.json'))['mylistgroup'] }
+      let(:mylist_data){ JSON.parse(File.read('spec/fixtures/nico_api_mylist/ok.json'))['mylistitem'] }
       
       it 'should create mylist' do
         expect(Mylist.all.map{|r| r.dup.attributes}).to eq [
           self.mylist.attributes,
           self.mylist_2.attributes
         ]
+      end
+      
+      it 'should create videos' do
+        expect(Video.all.map{|r| r.dup.attributes}).to eq [
+          self.video.attributes,
+          self.video_3.attributes
+        ]
+      end
+    end
+    
+    context 'when updating entries of the mylist' do
+      let(:video_2){ FactoryGirl.build :video_2 }
+      let(:deflist_data_2){ JSON.parse(File.read('spec/fixtures/nico_api_deflist/ok_2.json'))['mylistitem'] }
+      
+      before do
+        allow_any_instance_of(NicoApi::Deflist).to receive_messages(list: self.deflist_data_2)
+        self.user.fetch_mylist
+      end
+      
+      it 'should create mylist' do
+        expect(Mylist.all.map{|r| r.dup.attributes}).to eq [self.mylist.attributes]
       end
       
       it 'should create videos' do
