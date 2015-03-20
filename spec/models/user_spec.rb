@@ -81,16 +81,23 @@ RSpec.describe User, type: :model do
   
   describe '#fetch_mylist()' do
     let(:mylist){ FactoryGirl.build :mylist }
+    let(:mylist_2){ FactoryGirl.build :mylist_2 }
+    let(:user) { self.mylist.user }
     let(:video){ FactoryGirl.build :video }
-    let(:data){ JSON.parse(File.read('spec/fixtures/nico_api_deflist/ok.json'))['mylistitem'] }
+    let(:deflist_data){ JSON.parse(File.read('spec/fixtures/nico_api_deflist/ok.json'))['mylistitem'] }
+    let(:mylistgroup_data){ JSON.parse(File.read('spec/fixtures/nico_api_mylist_group/ok.json'))['mylistgroup'] }
     
     before do
-      allow_any_instance_of(NicoApi::Deflist).to receive_messages(list: self.data)
-      self.mylist.user.fetch_mylist
+      allow_any_instance_of(NicoApi::Deflist).to receive_messages(list: self.deflist_data)
+      allow_any_instance_of(NicoApi::MylistGroup).to receive_messages(list: self.mylistgroup_data)
+      self.user.fetch_mylist
     end
     
     it 'should create mylist' do
-      expect(Mylist.all.map{|r| r.dup.attributes}).to eq [self.mylist.attributes]
+      expect(Mylist.all.map{|r| r.dup.attributes}).to eq [
+        self.mylist.attributes,
+        self.mylist_2.attributes
+      ]
     end
     
     it 'should create videos' do
@@ -103,11 +110,14 @@ RSpec.describe User, type: :model do
       
       before do
         allow_any_instance_of(NicoApi::Deflist).to receive_messages(list: self.data_2)
-        self.mylist.user.fetch_mylist
+        self.user.fetch_mylist
       end
       
       it 'should create mylist' do
-        expect(Mylist.all.map{|r| r.dup.attributes}).to eq [self.mylist.attributes]
+        expect(Mylist.all.map{|r| r.dup.attributes}).to eq [
+          self.mylist.attributes,
+          self.mylist_2.attributes
+        ]
       end
       
       it 'should create videos' do
