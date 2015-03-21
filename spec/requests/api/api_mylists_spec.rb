@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'requests/api/api_entries_spec'
 
 RSpec.describe "Api::Mylists", type: :request do
   describe "GET /api/mylists" do
@@ -17,6 +18,22 @@ RSpec.describe "Api::Mylists", type: :request do
           expect(body).to be_json_eql(mylist.created_time .to_json).at_path "#{i}/created_time"
           expect(body).to be_json_eql(mylist.description  .to_json).at_path "#{i}/description"
         end
+      end
+    end
+  end
+  
+  describe "GET /api/mylists/:group_id/entries" do
+    include ApiEntriesTest
+    
+    let(:other_user){ FactoryGirl.create :user_template }
+    let(:group_id){ self.mylist.group_id }
+    let(:mylist){ self.current_user.mylists.first }
+    before { self.other_user }
+    
+    authenticated_context(:user_template) do
+      it 'should be entries of the mylist authenticated by the group_id' do
+        is_expected.to eq 200
+        self.expect_entries(mylist.entries)
       end
     end
   end
