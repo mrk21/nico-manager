@@ -46,4 +46,12 @@ FactoryGirl.define do
     seconds 1417
     latest_comment "どうせみんないなくな 重要無形文化財 そしてでかい(確信) ※通貨は日本円です にゃーっ... "
   end
+  
+  factory :video_template, class: Video do
+    sequence(:video_id){|n| "sm#{n}"}
+    sequence(:watch_id){|n| "sm#{n}"}
+    group_type "default"
+    created_time Time.now
+    updated_time Time.now
+  end
 end

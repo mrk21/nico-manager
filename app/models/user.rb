@@ -4,6 +4,7 @@ require 'nokogiri'
 class User < ActiveRecord::Base
   has_one :session, primary_key: :niconico_id, dependent: :destroy
   has_many :mylists
+  has_many :entries, through: :mylists
   
   validates :niconico_id, presence: true, uniqueness: true
   

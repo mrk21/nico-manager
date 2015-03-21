@@ -28,7 +28,13 @@ module RequestMacros
   module ClassMethods
     def authenticated_context(*user_traits, &block)
       context('with authentication'){
-        let(:current_user){ FactoryGirl.create(:user) }
+        let(:current_user) do
+          if user_traits.size == 0 then
+            FactoryGirl.create(:user)
+          else
+            FactoryGirl.create(*user_traits)
+          end
+        end
         
         define_authenticated_stub { self.current_user }
         

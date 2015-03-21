@@ -19,4 +19,12 @@ FactoryGirl.define do
     created_time Time.at(1409121606)
     updated_time Time.at(1409121615)
   end
+  
+  factory :mylist_template, class: Mylist do
+    sequence(:group_id)
+    
+    after(:create) do |mylist|
+      5.times{ create(:entry_template, mylist: mylist) }
+    end
+  end
 end

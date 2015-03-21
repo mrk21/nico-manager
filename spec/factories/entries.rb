@@ -18,4 +18,13 @@ FactoryGirl.define do
     created_time Time.at(1409129700)
     updated_time Time.at(1409129700)
   end
+  
+  factory :entry_template, class: Entry do
+    sequence(:item_id)
+    item_type 0
+    created_time Time.now
+    updated_time Time.now
+    
+    video { create(:video_template) }
+  end
 end
