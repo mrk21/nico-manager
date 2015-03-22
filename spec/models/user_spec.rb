@@ -170,4 +170,29 @@ RSpec.describe User, type: :model do
       end
     end
   end
+  
+  describe '#tags' do
+    user_traits = [:user_template, mylists_params: [
+      entries_params: [{
+        video_params: {tag_list: ['a']}
+      }]
+    ]]
+    
+    let(:user){ FactoryGirl.create *user_traits }
+    let(:other_user){ FactoryGirl.create *user_traits }
+    let(:expected){
+      [{"id"=>nil, "name"=>"a", "taggings_count"=>1}]
+    }
+    
+    before do
+      self.user
+      self.other_user
+    end
+    
+    subject { self.user.tags.map{|c| c.dup.attributes} }
+    
+    it 'should be tags of this user' do
+      is_expected.to eq self.expected
+    end
+  end
 end

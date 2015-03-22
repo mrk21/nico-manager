@@ -3,9 +3,10 @@ require 'nokogiri'
 
 class User < ActiveRecord::Base
   has_one :session, primary_key: :niconico_id, dependent: :destroy
-  has_many :mylists
+  has_many :mylists, dependent: :destroy
   has_many :entries, through: :mylists
   has_many :videos, ->{uniq}, through: :entries
+  has_many :tags, ->{ select('count(tags.id) as taggings_count, tags.id, tags.name').group('tags.id') }, through: :videos
   
   validates :niconico_id, presence: true, uniqueness: true
   

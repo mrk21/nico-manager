@@ -48,10 +48,23 @@ FactoryGirl.define do
   end
   
   factory :video_template, class: Video do
+    transient do
+      tag_list []
+    end
+    
     sequence(:video_id){|n| "sm#{n}"}
     sequence(:watch_id){|n| "sm#{n}"}
     group_type "default"
     created_time Time.now
     updated_time Time.now
+    
+    after(:create) do |video, evaluator|
+      unless evaluator.tag_list.empty? then
+        evaluator.tag_list.each do |tag|
+          video.tag_list.add tag
+        end
+        video.save
+      end
+    end
   end
 end

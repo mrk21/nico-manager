@@ -5,5 +5,6 @@ Rails.application.routes.draw do
     resources :mylists, only: :index do
       get ':group_id/entries'=> 'entries#index', on: :collection
     end
+    resources :tags, only: :index
   end
 end
