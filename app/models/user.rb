@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   has_one :session, primary_key: :niconico_id, dependent: :destroy
   has_many :mylists
   has_many :entries, through: :mylists
+  has_many :videos, ->{uniq}, through: :entries
   
   validates :niconico_id, presence: true, uniqueness: true
   
@@ -18,6 +19,7 @@ class User < ActiveRecord::Base
     user = User.create!(niconico_id: session.user_id) if user.nil?
     user.fetch_profile
     user.fetch_mylist
+    user.fetch_video_detail
     user.save
     user
   end
@@ -115,6 +117,18 @@ class User < ActiveRecord::Base
       end
       
       save_entries[mylist, NicoApi::Mylist.new(self.session, mylist.group_id).list]
+    end
+  end
+  
+  def fetch_video_detail
+    videos = Hash[*self.videos.map{|r| [r.video_id, r]}.flatten]
+    details = NicoApi::VideoArray.new.get(videos.keys)
+    details.each do |detail|
+      video = videos[detail['video']['id']]
+      detail['tags']['tag_info'].each do |tag|
+        video.tag_list.add(tag['tag'])
+      end
+      video.save
     end
   end
 end

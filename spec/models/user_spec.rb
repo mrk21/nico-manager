@@ -10,6 +10,7 @@ RSpec.describe User, type: :model do
       allow(Session).to receive_messages(create_by_authenticating: self.session)
       allow_any_instance_of(User).to receive(:fetch_profile)
       allow_any_instance_of(User).to receive(:fetch_mylist)
+      allow_any_instance_of(User).to receive(:fetch_video_detail)
     end
     
     it 'should be user' do
@@ -139,6 +140,33 @@ RSpec.describe User, type: :model do
       
       it 'should create videos' do
         expect(Video.all.map{|r| r.dup.attributes}).to eq [self.video.attributes, self.video_2.attributes]
+      end
+    end
+  end
+  
+  describe '#fetch_video_detail()' do
+    let(:video_ids){['sm25781587','sm24189468']}
+    let(:fixture_path){"spec/fixtures/video_array/ok_#{self.video_ids.join('_')}"}
+    let(:data){YAML.load(File.read "#{self.fixture_path}.yml")}
+    let(:expected){YAML.load(File.read "#{self.fixture_path}_tags.yml")}
+    
+    let(:user) do
+      FactoryGirl.create(:user_template, mylists_params: [
+        entries_params: self.video_ids.map{|id|
+          {video_params: {video_id: id}}
+        }
+      ])
+    end
+    
+    before do
+      allow_any_instance_of(NicoApi::VideoArray).to receive_messages(get: self.data)
+      self.user.fetch_video_detail
+      self.user.videos.reload
+    end
+    
+    it 'should set tags to this videos' do
+      self.user.videos.each do |video|
+        expect(video.tag_list.sort).to eq self.expected[video.video_id].sort
       end
     end
   end

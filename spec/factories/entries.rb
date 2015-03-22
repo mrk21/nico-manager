@@ -20,11 +20,15 @@ FactoryGirl.define do
   end
   
   factory :entry_template, class: Entry do
+    transient do
+      video_params {}
+    end
+    
     sequence(:item_id)
     item_type 0
     created_time Time.now
     updated_time Time.now
     
-    video { create(:video_template) }
+    video { create(:video_template, video_params) }
   end
 end

@@ -21,10 +21,22 @@ FactoryGirl.define do
   end
   
   factory :mylist_template, class: Mylist do
+    transient do
+      entries_params []
+    end
+    
     sequence(:group_id)
     
-    after(:create) do |mylist|
-      5.times{ create(:entry_template, mylist: mylist) }
+    after(:create) do |mylist, evaluator|
+      params = evaluator.entries_params
+      
+      if params.empty? then
+        5.times{ create(:entry_template, mylist: mylist) }
+      else
+        params.each do |param|
+          create(:entry_template, param.merge(mylist: mylist))
+        end
+      end
     end
   end
 end
