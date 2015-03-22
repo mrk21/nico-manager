@@ -31,7 +31,7 @@ RSpec.describe "Api::Mylists", type: :request do
     before { self.other_user }
     
     authenticated_context(:user_template) do
-      it 'should be entries of the mylist authenticated by the group_id' do
+      it 'should be entries of the mylist specified by the group_id' do
         is_expected.to eq 200
         self.expect_entries(mylist.entries)
       end
