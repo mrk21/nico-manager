@@ -7,16 +7,23 @@ class Entry < ActiveRecord::Base
     joins(:video).merge(Video.tagged_with(*args))
   }
   
-  scope :search, ->(words){
-    words = words.split(/\s+/)
+  scope :search, ->(words = nil){
+    return all if words.to_s.empty?
+    words = words.to_s.split(/\s+/)
+    wrap = ->(scope){
+      from("(%s) t" % scope.select(:id).to_sql).where('t.id = entries.id')
+    }
     
-    from("%s entries" % 
-      words.reduce(self){|r, word|
-        r.where(Video.arel_table[:title].matches("%#{word}%"))
-      }
-      .joins(:video)
-      .union(tagged_with(words))
-      .to_sql
+    where('exists (?) OR exists (?)',
+      wrap[tagged_with(words)],
+      
+      wrap[
+        joins(:video).instance_eval{
+          words.reduce(self){|scope, word|
+            scope.where(Video.arel_table[:title].matches("%#{word}%"))
+          }
+        }
+      ]
     )
   }
 end

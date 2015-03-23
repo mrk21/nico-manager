@@ -30,5 +30,14 @@ RSpec.describe Entry, type: :model do
         is_expected.to eq self.expected
       end
     end
+    
+    context 'when the words was empty' do
+      let(:search_words){''}
+      let(:expected){['sm1','sm2','sm3','sm4']}
+      
+      it 'should be all entries' do
+        is_expected.to eq self.expected
+      end
+    end
   end
 end

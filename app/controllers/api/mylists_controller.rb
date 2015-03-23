@@ -7,6 +7,8 @@ class Api::MylistsController < ApplicationController
   
   def entries
     @entries = @current_user.mylists.find_by(self.entries_params).entries
+      .includes(:video, :mylist)
+      .search(params[:q])
     render template: '/api/entries/index'
   end
   

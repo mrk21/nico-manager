@@ -38,13 +38,29 @@ RSpec.describe "Api::Entries", type: :request do
   include ApiEntriesTest
   
   describe "GET /api/entries" do
-    let(:other_user){ FactoryGirl.create :user_template }
+    user_traits = [:user_template, mylists_params: [
+      entries_params: [
+        {video_params: {tag_list: ['a']}},
+        {video_params: {tag_list: ['a','b']}},
+      ]
+    ]]
+    
+    let(:other_user){ FactoryGirl.create *user_traits }
     before { self.other_user }
     
-    authenticated_context(:user_template) do
+    authenticated_context(*user_traits) do
       it 'should be all entries of the authenticated user' do
         is_expected.to eq 200
         self.expect_entries(self.current_user.entries)
+      end
+      
+      context 'with search params' do
+        let(:params){{q: 'b'}}
+        
+        it 'should be all entries of the authenticated user matching the search params' do
+          is_expected.to eq 200
+          self.expect_entries(self.current_user.entries.search(self.params[:q]))
+        end
       end
     end
   end

@@ -3,5 +3,6 @@ class Api::EntriesController < ApplicationController
   
   def index
     @entries = @current_user.entries
+      .search(params[:q])
   end
 end

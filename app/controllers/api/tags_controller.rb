@@ -6,7 +6,10 @@ class Api::TagsController < ApplicationController
   end
   
   def entries
-    @entries = @current_user.entries.tagged_with(self.entries_params)
+    @entries = @current_user.entries
+      .includes(:video, :mylist)
+      .tagged_with(self.entries_params)
+      .search(params[:q])
     render template: '/api/entries/index'
   end
   
