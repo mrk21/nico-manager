@@ -14,7 +14,28 @@ export class SessionAuth {
 }
 
 export class EntryListItem {
-    video_id: string;
-    title: string;
-    thumbnail_url: string;
+    // mylist
+    group_id: number;
+    
+    // entry
+    item_type: string;
+    item_id: number;
+    created_time: string;
+    description: string;
+    
+    // video
+    video: {
+        video_id: string;
+        watch_id: string;
+        title: string;
+        thumbnail_url: string;
+        group_type: string;
+        is_deleting: boolean
+        created_time: string;
+        play_count?: number;
+        mylist_count?: number;
+        comment_count?: number;
+        seconds?: number;
+        latest_comment?: string;
+    }
 }

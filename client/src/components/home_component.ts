@@ -31,9 +31,9 @@ export class Spec extends Base.Spec<Props, State> {
         return React.jsx(`
             <div>
                 <ul ref="entryList">{this.state.entry.list.map((entry) =>
-                    <li key={entry.video_id}>
-                        <p>{entry.title}</p>
-                        <img src={entry.thumbnail_url} />
+                    <li key={entry.video.video_id}>
+                        <p>{entry.video.title}</p>
+                        <img src={entry.video.thumbnail_url} />
                     </li>
                 )}</ul>
             </div>

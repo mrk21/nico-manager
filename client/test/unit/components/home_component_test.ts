@@ -36,10 +36,8 @@ class MyHelper extends Helper<HomeComponent.Component> {}
     
     context('when initialized', () => {
         beforeEach(() => {
-            helper.stores.entry.onSet([{
-                video_id: 'sm123',
-                title: 'hoge',
-                thumbnail_url: 'http://hoge.com/foo.jpg'
+            helper.stores.entry.onSet([<any>{
+                video: {video_id: 'sm123'}
             }])
         });
         
