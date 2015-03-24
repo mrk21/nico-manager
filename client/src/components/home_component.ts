@@ -4,7 +4,9 @@ import Base = require('./base');
 import EntryStore = require('../stores/entry_store');
 import MylistStore = require('../stores/mylist_store');
 import TagStore = require('../stores/tag_store');
+import SearchFormComponent = require('../components/search_form_component');
 import Link = Router.Link;
+import SearchForm = SearchFormComponent.Component;
 
 export interface Props extends Base.Props {}
 export interface State extends Base.State {
@@ -43,14 +45,17 @@ export class Spec extends Base.Spec<Props, State> {
     }
     
     updateEntries() {
+        var params: any = this.getParams() || {};
+        var query: any = this.getQuery() || {};
+        
         if (this.isActive('mylist_entries')) {
-            this.getFlux().actions.mylist.entry((<any>this.getParams()).group_id);
+            this.getFlux().actions.mylist.entry(params.group_id, query.q);
         }
         else if (this.isActive('tag_entries')) {
-            this.getFlux().actions.tag.entry((<any>this.getParams()).name);
+            this.getFlux().actions.tag.entry(params.name, query.q);
         }
         else {
-            this.getFlux().actions.entry.index();
+            this.getFlux().actions.entry.index(query.q);
         }
     }
     
@@ -60,6 +65,8 @@ export class Spec extends Base.Spec<Props, State> {
         }
         return React.jsx(`
             <article>
+                <SearchForm ref="searchForm" />
+                
                 <ul ref="mylistList">{this.state.mylist.list.map((mylist) =>
                     <li key={mylist.group_id}>
                         <p><Link to="mylist_entries" params={{group_id: mylist.group_id}}>{mylist.name}</Link></p>

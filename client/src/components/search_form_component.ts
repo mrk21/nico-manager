@@ -1,0 +1,56 @@
+import React = require("react");
+import Base = require('./base');
+
+export interface Props extends Base.Props {}
+export interface State extends Base.State {
+    text?: string;
+    path?: string;
+}
+
+export class Spec extends Base.Spec<Props, State> {
+    getInitialState() {
+        return {
+            text: this.getTextFromQuery(),
+            path: this.getPath()
+        };
+    }
+    
+    getTextFromQuery() {
+        var query: any = this.getQuery() || {};
+        return query.q || '';
+    }
+    
+    componentDidUpdate() {
+        if (this.getPath() != this.state.path) {
+            this.setState({
+                text: this.getTextFromQuery(),
+                path: this.getPath()
+            });
+        }
+    }
+    
+    render() {
+        return React.jsx(`
+            <form onSubmit={this.onSubmit}>
+                <input type="search"
+                    placeholder="search"
+                    value={this.state.text}
+                    onChange={this.onChange} />
+               <input type="submit" value="search" />
+            </form>
+        `);
+    }
+    
+    onChange(e: React.SyntheticEvent) {
+        this.setState({text: (<HTMLInputElement>e.target).value});
+    }
+    
+    onSubmit() {
+        var query: any = this.getQuery();
+        query.q = this.state.text;
+        this.transitionTo(this.getPathname(), this.getParams(), query);
+    }
+}
+
+export type Component = Base.Component<Props, State>;
+export var Component = Base.createClass(Spec);

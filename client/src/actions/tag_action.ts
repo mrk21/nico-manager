@@ -19,9 +19,12 @@ export class Index extends Action.Base<Api.TagListItem[] | Api.Message> {
 }
 
 export class Entry extends Action.Base<Api.EntryListItem[] | Api.Message> {
-    handler(name: string) {
+    handler(name: string, query?: string) {
+        var sendQuery: any = query ? {q: query} : {};
+        
         request
             .get(`/api/tags/${name}/entries`)
+            .query(sendQuery)
             .end((res: request.Response) => {
                 if (res.error) {
                     this.dispatch('session:unset', JSON.parse(res.text));

@@ -19,9 +19,12 @@ export class Index extends Action.Base<Api.MylistListItem[] | Api.Message> {
 }
 
 export class Entry extends Action.Base<Api.EntryListItem[] | Api.Message> {
-    handler(groupId: number) {
+    handler(groupId: number, query?: string) {
+        var sendQuery: any = query ? {q: query} : {};
+        
         request
             .get(`/api/mylists/${groupId}/entries`)
+            .query(sendQuery)
             .end((res: request.Response) => {
                 if (res.error) {
                     this.dispatch('session:unset', JSON.parse(res.text));

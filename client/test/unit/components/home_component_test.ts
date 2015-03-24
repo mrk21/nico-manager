@@ -112,15 +112,19 @@ class MyHelper extends Helper<HomeComponent.Component> {}
             }]);
         });
         
+        it('should exist a search form', () => {
+            assert(helper.component.refs['searchForm'] !== undefined);
+        });
+        
         it('should exist an entry list', () => {
             assert(helper.component.refs['entryList'] !== undefined);
         });
         
-        it('should exist an mylist list', () => {
+        it('should exist a mylist list', () => {
             assert(helper.component.refs['mylistList'] !== undefined);
         });
         
-        it('should exist an tag list', () => {
+        it('should exist a tag list', () => {
             assert(helper.component.refs['tagList'] !== undefined);
         });
     });
