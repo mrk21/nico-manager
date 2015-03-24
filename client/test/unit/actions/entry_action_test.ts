@@ -12,11 +12,9 @@ import Api = require('../../../src/api');
     describe('Index', () => {
         var response = {
             status: 200,
-            body: <any>{
-                user_id: '123',
-                nickname: 'hoge',
-                avatar: 'http://hoge.com/bar.jpg'
-            }
+            body: <any>[{
+                video: {video_id: 'sm9'}
+            }]
         };
         
         beforeEach(() => nock('http://localhost')

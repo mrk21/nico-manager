@@ -29,7 +29,7 @@ class Helper<ComponentType extends React.CompositeComponent<any,any>> {
             getCurrentPathname: () => {},
             getCurrentParams: () => {},
             getCurrentQuery: () => {},
-            isActive: () => {},
+            isActive: (to: string, params: {}, query: {}) => {},
             
             getRouteAtDepth: () => {},
             setRouteComponentAtDepth: () => {},

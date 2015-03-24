@@ -39,3 +39,8 @@ export class EntryListItem {
         latest_comment?: string;
     }
 }
+
+export class TagListItem {
+    name: string;
+    count: number;
+}
