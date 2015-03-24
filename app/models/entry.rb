@@ -10,20 +10,13 @@ class Entry < ActiveRecord::Base
   scope :search, ->(words = nil){
     return all if words.to_s.empty?
     words = words.to_s.split(/\s+/)
-    wrap = ->(scope){
-      from("(%s) t" % scope.select(:id).to_sql).where('t.id = entries.id')
-    }
     
-    where('exists (?) OR exists (?)',
-      wrap[tagged_with(words)],
+    where('entries.id IN (?) OR entries.id IN (?)',
+      unscoped.tagged_with(words).select(:id),
       
-      wrap[
-        joins(:video).instance_eval{
-          words.reduce(self){|scope, word|
-            scope.where(Video.arel_table[:title].matches("%#{word}%"))
-          }
-        }
-      ]
+      words.reduce(unscoped.joins(:video).select(:id)){|scope, word|
+        scope.where(Video.arel_table[:title].matches("%#{word}%"))
+      }
     )
   }
 end

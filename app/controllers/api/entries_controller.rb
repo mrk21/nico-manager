@@ -3,6 +3,7 @@ class Api::EntriesController < ApplicationController
   
   def index
     @entries = @current_user.entries
+      .includes(:video, :mylist)
       .search(params[:q])
   end
 end
