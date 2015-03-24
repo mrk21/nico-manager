@@ -27,6 +27,10 @@ FactoryGirl.define do
     
     sequence(:group_id)
     
+    trait :deflist do
+      group_id nil
+    end
+    
     after(:create) do |mylist, evaluator|
       params = evaluator.entries_params
       

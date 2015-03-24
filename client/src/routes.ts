@@ -13,6 +13,7 @@ class Routes {
         <Route name="root" path="/" handler={App}>
             <DefaultRoute handler={Home} />
             <Route name="tag_entries" path="/tags/:name/entries" handler={Home} />
+            <Route name="mylist_entries" path="/mylists/:group_id/entries" handler={Home} />
         </Route>
     `);
 }

@@ -3,6 +3,5 @@ class Mylist < ActiveRecord::Base
   has_many :entries, dependent: :destroy
   accepts_nested_attributes_for :entries
   
-  validates :user_id, presence: true
-  validates :group_id, uniqueness: true
+  scope :without_deflist, ->{ where.not(group_id: nil) }
 end

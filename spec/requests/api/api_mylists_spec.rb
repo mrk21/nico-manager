@@ -10,7 +10,7 @@ RSpec.describe "Api::Mylists", type: :request do
       it 'should be all mylists of the authenticated user' do
         is_expected.to eq 200
         
-        self.current_user.mylists.each_with_index do |mylist, i|
+        self.current_user.mylists.without_deflist.each_with_index do |mylist, i|
           expect(body).to be_json_eql(mylist.group_id     .to_json).at_path "#{i}/group_id"
           expect(body).to be_json_eql(mylist.name         .to_json).at_path "#{i}/name"
           expect(body).to be_json_eql(mylist.is_public    .to_json).at_path "#{i}/is_public"

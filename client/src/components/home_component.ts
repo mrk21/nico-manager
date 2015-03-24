@@ -2,12 +2,14 @@ import React = require("react");
 import Router = require('react-router');
 import Base = require('./base');
 import EntryStore = require('../stores/entry_store');
+import MylistStore = require('../stores/mylist_store');
 import TagStore = require('../stores/tag_store');
 import Link = Router.Link;
 
 export interface Props extends Base.Props {}
 export interface State extends Base.State {
     entry?: EntryStore.State;
+    mylist?: MylistStore.State;
     tag?: TagStore.State;
     path?: string;
 }
@@ -22,12 +24,14 @@ export class Spec extends Base.Spec<Props, State> {
     getStateFromFlux() {
         return {
             entry: this.getFlux().store('entry').state,
+            mylist: this.getFlux().store('mylist').state,
             tag: this.getFlux().store('tag').state
         };
     }
     
     componentWillMount() {
         this.updateEntries();
+        this.getFlux().actions.mylist.index();
         this.getFlux().actions.tag.index();
     }
     
@@ -39,7 +43,10 @@ export class Spec extends Base.Spec<Props, State> {
     }
     
     updateEntries() {
-        if (this.isActive('tag_entries')) {
+        if (this.isActive('mylist_entries')) {
+            this.getFlux().actions.mylist.entry((<any>this.getParams()).group_id);
+        }
+        else if (this.isActive('tag_entries')) {
             this.getFlux().actions.tag.entry((<any>this.getParams()).name);
         }
         else {
@@ -48,11 +55,17 @@ export class Spec extends Base.Spec<Props, State> {
     }
     
     render() {
-        if (!this.state.entry.isFetched || !this.state.tag.isFetched) {
+        if (!this.state.entry.isFetched || !this.state.mylist.isFetched || !this.state.tag.isFetched) {
             return React.jsx(`<article />`);
         }
         return React.jsx(`
             <article>
+                <ul ref="mylistList">{this.state.mylist.list.map((mylist) =>
+                    <li key={mylist.group_id}>
+                        <p><Link to="mylist_entries" params={{group_id: mylist.group_id}}>{mylist.name}</Link></p>
+                    </li>
+                )}</ul>
+                
                 <ul ref="tagList">{this.state.tag.list.map((tag) =>
                     <li key={tag.name}>
                         <p><Link to="tag_entries" params={{name: tag.name}}>{tag.name}</Link></p>
@@ -72,4 +85,4 @@ export class Spec extends Base.Spec<Props, State> {
 }
 
 export type Component = Base.Component<Props, State>;
-export var Component = Base.createClass(Spec, ['entry','tag']);
+export var Component = Base.createClass(Spec, ['entry','mylist','tag']);

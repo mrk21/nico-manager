@@ -14,6 +14,7 @@ FactoryGirl.define do
       params = evaluator.mylists_params
       
       if params.empty? then
+        create(:mylist_template, :deflist, user: user)
         3.times{ create(:mylist_template, user: user) }
       else
         params.each do |param|

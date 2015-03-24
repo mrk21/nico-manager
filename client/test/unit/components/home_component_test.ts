@@ -15,10 +15,14 @@ class MyHelper extends Helper<HomeComponent.Component> {}
     var helper: MyHelper;
     var entryActionMock: SinonMock;
     var tagActionMock: SinonMock;
+    var mylistActionMock: SinonMock;
     
     var helperCallback = (helper: MyHelper) => {
         entryActionMock = sinon.mock(helper.actions.entry);
         entryActionMock.expects('index').once();
+        
+        mylistActionMock = sinon.mock(helper.actions.mylist);
+        mylistActionMock.expects('index').once();
         
         tagActionMock = sinon.mock(helper.actions.tag);
         tagActionMock.expects('index').once();
@@ -33,12 +37,40 @@ class MyHelper extends Helper<HomeComponent.Component> {}
             assert(entryActionMock.verify());
         });
         
+        it('should invoke mylist.index action', () => {
+            assert(mylistActionMock.verify());
+        });
+        
         it('should invoke tag.index action', () => {
             assert(tagActionMock.verify());
         });
         
         it('should render an empty view', () => {
             assert(helper.component.getDOMNode<HTMLElement>().innerHTML === '');
+        });
+        
+        context('when specified a mylist', () => {
+            var groupId = 1;
+            
+            before(() => {
+                helperCallback = (helper: MyHelper) => {
+                    sinon.stub(helper.context, 'isActive').withArgs('mylist_entries').returns(true);
+                    sinon.stub(helper.context, 'getCurrentParams').returns({group_id: groupId});
+                    
+                    entryActionMock = sinon.mock(helper.actions.entry);
+                    
+                    mylistActionMock = sinon.mock(helper.actions.mylist);
+                    mylistActionMock.expects('index').once();
+                    mylistActionMock.expects('entry').withArgs(groupId).once();
+                    
+                    tagActionMock = sinon.mock(helper.actions.tag);
+                    tagActionMock.expects('index').once();
+                }
+            });
+            
+            it('should invoke mylist.entry action with the mylist group_id', () => {
+                assert(mylistActionMock.verify());
+            });
         });
         
         context('when specified a tag', () => {
@@ -48,6 +80,11 @@ class MyHelper extends Helper<HomeComponent.Component> {}
                 helperCallback = (helper: MyHelper) => {
                     sinon.stub(helper.context, 'isActive').withArgs('tag_entries').returns(true);
                     sinon.stub(helper.context, 'getCurrentParams').returns({name: name});
+                    
+                    entryActionMock = sinon.mock(helper.actions.entry);
+                    
+                    mylistActionMock = sinon.mock(helper.actions.mylist);
+                    mylistActionMock.expects('index').once();
                     
                     tagActionMock = sinon.mock(helper.actions.tag);
                     tagActionMock.expects('index').once();
@@ -66,6 +103,9 @@ class MyHelper extends Helper<HomeComponent.Component> {}
             helper.stores.entry.onSet([<any>{
                 video: {video_id: 'sm123'}
             }]);
+            helper.stores.mylist.onSet([<any>{
+                group_id: 1
+            }]);
             helper.stores.tag.onSet([<any>{
                 name: 'tag1',
                 count: 3
@@ -74,6 +114,10 @@ class MyHelper extends Helper<HomeComponent.Component> {}
         
         it('should exist an entry list', () => {
             assert(helper.component.refs['entryList'] !== undefined);
+        });
+        
+        it('should exist an mylist list', () => {
+            assert(helper.component.refs['mylistList'] !== undefined);
         });
         
         it('should exist an tag list', () => {

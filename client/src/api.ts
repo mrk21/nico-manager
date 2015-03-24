@@ -44,3 +44,12 @@ export class TagListItem {
     name: string;
     count: number;
 }
+
+export class MylistListItem {
+    group_id: number;
+    name: string;
+    is_public: boolean;
+    sort_order: number;
+    created_time: string;
+    description: string;
+}
