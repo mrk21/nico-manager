@@ -1,0 +1,60 @@
+.c-mylist-list {
+  self = 'c-mylist-list';
+  margin: 0;
+  padding: 0;
+  
+  /{element(self, list-item)} {
+    base-background-color = #48C9B0;
+    count-background-color = lighten(base-background-color, 20%);
+    
+    display: block;
+    margin: 0;
+    margin-bottom: 8px;
+    padding: 0;
+    
+    background: (base-background-color);
+    box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+    border-radius: 2px;
+    transition: background-color 0.2s ease;
+    
+    a {
+      display: flex;
+      color: #fff;
+      text-decoration: none;
+      
+      /{$element(self, mylist-element)} {
+        vertical-align: middle;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+      }
+      
+      /{element(self, name)} {
+        @extend {$element(self, mylist-element)};
+        padding: 0 7px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        flex-grow: 1;
+      }
+      
+      /{element(self, count)} {
+        @extend {$element(self, mylist-element)};
+        
+        padding: 0 7px;
+        background: (count-background-color);
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+        transition: background-color 0.2s ease;
+      }
+      
+      &:hover {
+        background: darken(base-background-color, 20%);
+        
+        {element(self, count)} {
+          background: darken(count-background-color, 20%);
+        }
+      }
+    }
+  }
+}

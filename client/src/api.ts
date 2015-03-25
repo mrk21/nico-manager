@@ -14,16 +14,18 @@ export class SessionAuth {
 }
 
 export class EntryListItem {
-    // mylist
-    group_id: number;
+    mylist: {
+        group_id: number;
+        name: string;
+    };
     
-    // entry
-    item_type: string;
-    item_id: number;
-    created_time: string;
-    description: string;
+    entry: {
+        item_type: string;
+        item_id: number;
+        created_time: string;
+        description: string;
+    };
     
-    // video
     video: {
         video_id: string;
         watch_id: string;
@@ -37,7 +39,8 @@ export class EntryListItem {
         comment_count?: number;
         seconds?: number;
         latest_comment?: string;
-    }
+        description?: string;
+    };
 }
 
 export class TagListItem {
@@ -46,6 +49,7 @@ export class TagListItem {
 }
 
 export class MylistListItem {
+    count: number;
     group_id: number;
     name: string;
     is_public: boolean;

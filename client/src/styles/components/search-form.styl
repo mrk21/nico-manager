@@ -1,0 +1,11 @@
+.c-search-form {
+  self = 'c-search-form';
+  display: flex;
+  
+  /{element(self, input)}[type=text] {
+    margin: 0;
+    flex-grow: 1;
+  }
+  
+  /{element(self, submit)}[type=submit] {}
+}

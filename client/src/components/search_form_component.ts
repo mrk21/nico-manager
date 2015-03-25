@@ -1,7 +1,9 @@
 import React = require("react");
 import Base = require('./base');
 
-export interface Props extends Base.Props {}
+export interface Props extends Base.Props {
+    ref: string;
+}
 export interface State extends Base.State {
     text?: string;
     path?: string;
@@ -31,12 +33,9 @@ export class Spec extends Base.Spec<Props, State> {
     
     render() {
         return React.jsx(`
-            <form onSubmit={this.onSubmit}>
-                <input type="search"
-                    placeholder="search"
-                    value={this.state.text}
-                    onChange={this.onChange} />
-               <input type="submit" value="search" />
+            <form className="c-search-form" onSubmit={this.onSubmit}>
+                <input className="c-search-form__input" type="text" placeholder="search" value={this.state.text} onChange={this.onChange} />
+                <input className="c-search-form__submit" type="submit" value="search" />
             </form>
         `);
     }

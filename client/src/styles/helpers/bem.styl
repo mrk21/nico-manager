@@ -1,0 +1,15 @@
+element-name(block, element, modifier = '') {
+  result = block +'__'+ element;
+  if modifier is not '' {
+    result = result +'--'+ modifier;
+  }
+  return result;
+}
+
+element(block, element, modifier = '') {
+  return '.'+ element-name(block, element, modifier);
+}
+
+$element(block, element, modifier = '') {
+  return '$'+ element-name(block, element, modifier);
+}

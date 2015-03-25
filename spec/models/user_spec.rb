@@ -148,7 +148,7 @@ RSpec.describe User, type: :model do
     let(:video_ids){['sm25781587','sm24189468']}
     let(:fixture_path){"spec/fixtures/video_array/ok_#{self.video_ids.join('_')}"}
     let(:data){YAML.load(File.read "#{self.fixture_path}.yml")}
-    let(:expected){YAML.load(File.read "#{self.fixture_path}_tags.yml")}
+    let(:expected){YAML.load(File.read "#{self.fixture_path}_expected.yml")}
     
     let(:user) do
       FactoryGirl.create(:user_template, mylists_params: [
@@ -164,9 +164,15 @@ RSpec.describe User, type: :model do
       self.user.videos.reload
     end
     
-    it 'should set tags to this videos' do
+    it 'should set tags to this video' do
       self.user.videos.each do |video|
-        expect(video.tag_list.sort).to eq self.expected[video.video_id].sort
+        expect(video.tag_list.sort).to eq self.expected[video.video_id]['tags'].sort
+      end
+    end
+    
+    it 'should set a description to this video' do
+      self.user.videos.each do |video|
+        expect(video.description).to eq self.expected[video.video_id]['description']
       end
     end
   end

@@ -1,12 +1,17 @@
 json.array!(@entries) do |entry|
-  json.extract!(entry.mylist, :group_id)
+  json.mylist do
+    json.extract!(entry.mylist, :group_id)
+    json.extract!(entry.mylist, :name)
+  end
   
-  json.extract!(entry,
-    :item_type,
-    :item_id,
-    :created_time,
-    :description
-  )
+  json.entry do
+    json.extract!(entry,
+      :item_type,
+      :item_id,
+      :created_time,
+      :description
+    )
+  end
   
   json.video do
     json.extract!(entry.video,
@@ -21,7 +26,8 @@ json.array!(@entries) do |entry|
       :mylist_count,
       :comment_count,
       :seconds,
-      :latest_comment
+      :latest_comment,
     )
+    json.description strip_tags(entry.video.description)
   end
 end

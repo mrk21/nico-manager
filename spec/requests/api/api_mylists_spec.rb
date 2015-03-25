@@ -11,12 +11,13 @@ RSpec.describe "Api::Mylists", type: :request do
         is_expected.to eq 200
         
         self.current_user.mylists.without_deflist.each_with_index do |mylist, i|
-          expect(body).to be_json_eql(mylist.group_id     .to_json).at_path "#{i}/group_id"
-          expect(body).to be_json_eql(mylist.name         .to_json).at_path "#{i}/name"
-          expect(body).to be_json_eql(mylist.is_public    .to_json).at_path "#{i}/is_public"
-          expect(body).to be_json_eql(mylist.sort_order   .to_json).at_path "#{i}/sort_order"
-          expect(body).to be_json_eql(mylist.created_time .to_json).at_path "#{i}/created_time"
-          expect(body).to be_json_eql(mylist.description  .to_json).at_path "#{i}/description"
+          expect(body).to be_json_eql(mylist.entries.count  .to_json).at_path "#{i}/count"
+          expect(body).to be_json_eql(mylist.group_id       .to_json).at_path "#{i}/group_id"
+          expect(body).to be_json_eql(mylist.name           .to_json).at_path "#{i}/name"
+          expect(body).to be_json_eql(mylist.is_public      .to_json).at_path "#{i}/is_public"
+          expect(body).to be_json_eql(mylist.sort_order     .to_json).at_path "#{i}/sort_order"
+          expect(body).to be_json_eql(mylist.created_time   .to_json).at_path "#{i}/created_time"
+          expect(body).to be_json_eql(mylist.description    .to_json).at_path "#{i}/description"
         end
       end
     end

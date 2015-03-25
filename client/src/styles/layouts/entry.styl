@@ -1,0 +1,46 @@
+.l-entry {
+  self = 'l-entry';
+  
+  display: flex;
+  width: 900px;
+  padding: 20px 0;
+  
+  /{element(self, nav)} {
+    width: 230px;
+    padding-right: 50px;
+    
+    h3 {
+      font-size: 18px;
+      text-transform: uppercase;
+      margin: 0;
+      margin-bottom: 5px;
+      padding: 0;
+      line-height: 2;
+    }
+    
+    /{element(self, mylists)} {
+      margin-bottom: 40px;
+    }
+    
+    /{element(self, tags)} {}
+  }
+  
+  /{element(self, entries)} {
+    flex-grow: 1;
+    width: 670px;
+    
+    h2 {
+      font-size: 18px;
+      text-transform: uppercase;
+      margin: 0;
+      margin-bottom: 5px;
+      padding: 0;
+      line-height: 2;
+    }
+    
+    /{element(self, search)} {
+      width: 100%;
+      margin-bottom: 50px;
+    }
+  }
+}

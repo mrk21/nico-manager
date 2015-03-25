@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150322051652) do
+ActiveRecord::Schema.define(version: 20150325130246) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -91,6 +91,7 @@ ActiveRecord::Schema.define(version: 20150322051652) do
     t.integer  "comment_count",  default: 0,     null: false
     t.integer  "seconds"
     t.text     "latest_comment"
+    t.string   "description"
   end
 
   add_index "videos", ["video_id"], name: "index_videos_on_video_id", unique: true, using: :btree

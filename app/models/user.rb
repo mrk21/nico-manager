@@ -126,6 +126,7 @@ class User < ActiveRecord::Base
     details = NicoApi::VideoArray.new.get(videos.keys)
     details.each do |detail|
       video = videos[detail['video']['id']]
+      video.description = detail['video']['description']
       detail['tags']['tag_info'].each do |tag|
         video.tag_list.add(tag['tag'])
       end

@@ -3,9 +3,8 @@ import TypedReact = require("typed-react");
 import Fluxxor = require('fluxxor');
 import Router = require('react-router');
 
-export interface Props extends React.ReactAttributes {
+export interface Props {
     flux: Fluxxor.Flux;
-    ref: string;
 }
 
 export interface State {}

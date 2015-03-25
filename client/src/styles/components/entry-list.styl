@@ -1,0 +1,66 @@
+.c-entry-list {
+  self = 'c-entry-list';
+  
+  margin: 0;
+  padding: 0;
+  
+  /{element(self, list-item)} {
+    base-background-color = #48C9B0;
+    
+    display: block;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+    padding: 0;
+    margin: 0;
+    margin-bottom: 30px;
+    
+    a {
+      display: block;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      padding: 0 (padding);
+      margin-bottom: (padding);
+      line-height: 2;
+      text-decoration: none;
+      border-top-left-radius: 2px;
+      border-top-right-radius: 2px;
+      color: #fff;
+      background-color: (base-background-color);
+      transition: background-color 0.2s ease;
+      
+      &:hover {
+        background-color: darken(base-background-color, 20%);
+      }
+      
+      /{element(self, title)} {
+        margin: 0;
+        padding: 0 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        flex-grow: 1;
+      }
+    }
+    
+    /{element(self, wrapper)} {
+      display: flex;
+      height: 100px;
+      
+      /{element(self, thumbnail)} {
+        margin: 0;
+        padding: 0;
+        width: 130px;
+        height: 100px;
+      }
+      /{element(self, description)} {
+        margin: 0;
+        padding: 10px;
+        flex-grow: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+}

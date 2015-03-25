@@ -60,34 +60,68 @@ export class Spec extends Base.Spec<Props, State> {
     }
     
     render() {
+        var that = this;
+        
         if (!this.state.entry.isFetched || !this.state.mylist.isFetched || !this.state.tag.isFetched) {
             return React.jsx(`<article />`);
         }
         return React.jsx(`
-            <article>
-                <SearchForm ref="searchForm" />
+            <article className="l-entry">
+                <div className="l-entry__nav">
+                    <nav className="l-entry__mylists">
+                        <h3>mylists</h3>
+                        <ul className="c-mylist-list" ref="mylistList">{this.state.mylist.list.map((mylist) =>
+                            <li className="c-mylist-list__list-item" key={mylist.group_id} title={mylist.name}>
+                                <Link to="mylist_entries" params={{group_id: mylist.group_id}}>
+                                    <p className="c-mylist-list__name">{mylist.name}</p>
+                                    <p className="c-mylist-list__count">{mylist.count}</p>
+                                </Link>
+                            </li>
+                        )}</ul>
+                    </nav>
+                    
+                    <nav className="l-entry__tags">
+                        <h3>tags</h3>
+                        <ul className="c-tag-list" ref="tagList">{this.state.tag.list.map((tag) =>
+                            <li className="c-tag-list__list-item" key={tag.name} title={tag.name}>
+                                <Link to="tag_entries" params={{name: tag.name}}>
+                                    <p className="c-tag-list__name">{tag.name}</p>
+                                    <p className="c-tag-list__count">{tag.count}</p>
+                                </Link>
+                            </li>
+                        )}</ul>
+                    </nav>
+                </div>
                 
-                <ul ref="mylistList">{this.state.mylist.list.map((mylist) =>
-                    <li key={mylist.group_id}>
-                        <p><Link to="mylist_entries" params={{group_id: mylist.group_id}}>{mylist.name}</Link></p>
-                    </li>
-                )}</ul>
-                
-                <ul ref="tagList">{this.state.tag.list.map((tag) =>
-                    <li key={tag.name}>
-                        <p><Link to="tag_entries" params={{name: tag.name}}>{tag.name}</Link></p>
-                        <p>{tag.count}</p>
-                    </li>
-                )}</ul>
-                
-                <ul ref="entryList">{this.state.entry.list.map((entry) =>
-                    <li key={[entry.group_id, entry.item_id].join('-')}>
-                        <p>{entry.video.title}</p>
-                        <img src={entry.video.thumbnail_url} />
-                    </li>
-                )}</ul>
+                <section className="l-entry__entries">
+                    <h2>entries</h2>
+                    
+                    <div className="l-entry__search">
+                        <SearchForm ref="searchForm" />
+                    </div>
+                    
+                    <ul className="c-entry-list" ref="entryList">{this.state.entry.list.map((entry) =>
+                        <li className="c-entry-list__list-item" key={[entry.mylist.group_id, entry.entry.item_id].join('-')} title={entry.video.title}>
+                            <a href={'http://www.nicovideo.jp/watch/' + entry.video.watch_id}>
+                                <p className="c-entry-list__title">{entry.video.title}</p>
+                            </a>
+                            
+                            <div className="c-entry-list__wrapper">
+                                <img className="c-entry-list__thumbnail" src={entry.video.thumbnail_url} />
+                                <p className="c-entry-list__description" title={entry.video.description}>{that.ellipt_string(entry.video.description, 100)}</p>
+                            </div>
+                        </li>
+                    )}</ul>
+                </section>
             </article>
         `);
+    }
+    
+    ellipt_string(str: string, limit: number) {
+        if (str.length > limit) {
+            return str.slice(0,limit) + '…';
+        }
+        return str;
     }
 }
 

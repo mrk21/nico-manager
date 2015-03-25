@@ -1,4 +1,5 @@
 json.array!(@mylists) do |mylist|
+  json.count mylist.entries.count
   json.extract!(mylist,
     :group_id,
     :name,
