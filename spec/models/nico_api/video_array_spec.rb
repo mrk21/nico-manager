@@ -18,5 +18,13 @@ RSpec.describe NicoApi::VideoArray, type: :model do
     it 'should be video details' do
       is_expected.to eq self.expected
     end
+    
+    context 'when videos number of the response was 1,' do
+      let(:video_ids){['sm25781587']}
+      
+      it 'should return to an array whose number of the elements is 1' do
+        is_expected.to eq self.expected
+      end
+    end
   end
 end

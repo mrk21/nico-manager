@@ -15,6 +15,8 @@ class NicoApi::VideoArray
       http.request(req)
     end
     
-    Hash.from_xml(response.body)['nicovideo_video_response']['video_info']
+    result = Hash.from_xml(response.body)['nicovideo_video_response']['video_info']
+    return [result] unless result.instance_of? Array
+    result
   end
 end
