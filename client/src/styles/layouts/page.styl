@@ -1,6 +1,6 @@
-.page {
+.l-page {
   self = selector();
-  content_width = 900px;
+  content_width = 1000px;
   
   /{self}__header {
     header-background-color = #48C9B0;
@@ -27,6 +27,11 @@
         a {
           text-decoration: none;
           color: inherit;
+          transition: color 0.2s ease;
+          
+          &:hover {
+            color: #ffffaa;
+          }
         }
       }
       
@@ -51,6 +56,8 @@
         /{self}__user-info {
           position: relative;
           z-index: 2;
+          display: flex;
+          align-items: center;
           height: (header-height);
           padding: 0;
           padding-left: 15px;
@@ -59,9 +66,6 @@
           transition: background-color 0.2s ease;
           
           img {
-            position: relative;
-            top: -1px;
-            display: inline-block;
             vertical-align: middle;
             width: 24px;
             height: 24px;
@@ -70,14 +74,8 @@
           }
           
           p {
-            position: relative;
-            top: -2px;
-            display: inline-block;
             vertical-align: middle;
-            font-weight: 300;
             font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: -1px;
             margin: 0;
           }
         }
@@ -106,7 +104,6 @@
               padding: 5px 15px;
               width: 100%;
               font-size: 14px;
-              font-weight: 300;
               text-align: left;
               text-transform: capitalize;
               transition: background-color 0.2s ease;

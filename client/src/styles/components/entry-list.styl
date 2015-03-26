@@ -8,8 +8,6 @@
     base-background-color = #48C9B0;
     
     display: block;
-    border-bottom-left-radius: 2px;
-    border-bottom-right-radius: 2px;
     box-shadow: 0 1px 1px rgba(0,0,0,0.2);
     padding: 0;
     margin: 0;
@@ -22,13 +20,12 @@
       overflow: hidden;
       padding: 0 (padding);
       margin-bottom: (padding);
-      line-height: 2;
+      line-height: 1.8;
       text-decoration: none;
-      border-top-left-radius: 2px;
-      border-top-right-radius: 2px;
       color: #fff;
       background-color: (base-background-color);
       transition: background-color 0.2s ease;
+      box-shadow: 0 1px 1px rgba(0,0,0,0.1);
       
       &:hover {
         background-color: darken(base-background-color, 20%);
@@ -60,6 +57,7 @@
         flex-grow: 1;
         overflow: hidden;
         text-overflow: ellipsis;
+        line-height: 1.5;
       }
     }
   }

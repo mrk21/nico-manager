@@ -108,7 +108,7 @@ export class Spec extends Base.Spec<Props, State> {
                             
                             <div className="c-entry-list__wrapper">
                                 <img className="c-entry-list__thumbnail" src={entry.video.thumbnail_url} />
-                                <p className="c-entry-list__description" title={entry.video.description}>{that.ellipt_string(entry.video.description, 100)}</p>
+                                <p className="c-entry-list__description" title={entry.video.description}>{that.elliptString(entry.video.description, 100)}</p>
                             </div>
                         </li>
                     )}</ul>
@@ -117,9 +117,10 @@ export class Spec extends Base.Spec<Props, State> {
         `);
     }
     
-    ellipt_string(str: string, limit: number) {
+    elliptString(str: string, limit: number) {
+        str = str || '';
         if (str.length > limit) {
-            return str.slice(0,limit) + '…';
+            return str.slice(0,limit) + '...';
         }
         return str;
     }

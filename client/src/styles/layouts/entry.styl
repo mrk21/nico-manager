@@ -2,11 +2,10 @@
   self = 'l-entry';
   
   display: flex;
-  width: 900px;
   padding: 20px 0;
   
   /{element(self, nav)} {
-    width: 230px;
+    width: 250px;
     padding-right: 50px;
     
     h3 {
@@ -16,6 +15,7 @@
       margin-bottom: 5px;
       padding: 0;
       line-height: 2;
+      color: #666;
     }
     
     /{element(self, mylists)} {
@@ -27,7 +27,7 @@
   
   /{element(self, entries)} {
     flex-grow: 1;
-    width: 670px;
+    width: 750px;
     
     h2 {
       font-size: 18px;
@@ -36,6 +36,7 @@
       margin-bottom: 5px;
       padding: 0;
       line-height: 2;
+      color: #666;
     }
     
     /{element(self, search)} {

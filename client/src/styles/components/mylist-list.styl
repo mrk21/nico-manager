@@ -12,9 +12,8 @@
     margin-bottom: 8px;
     padding: 0;
     
-    background: (base-background-color);
+    background-color: (base-background-color);
     box-shadow: 0 1px 1px rgba(0,0,0,0.2);
-    border-radius: 2px;
     transition: background-color 0.2s ease;
     
     a {
@@ -43,17 +42,15 @@
         
         padding: 0 7px;
         background: (count-background-color);
-        border-top-right-radius: 2px;
-        border-bottom-right-radius: 2px;
         transition: background-color 0.2s ease;
       }
+    }
+    
+    &:hover {
+      background: darken(base-background-color, 20%);
       
-      &:hover {
-        background: darken(base-background-color, 20%);
-        
-        {element(self, count)} {
-          background: darken(count-background-color, 20%);
-        }
+      {element(self, count)} {
+        background: darken(count-background-color, 20%);
       }
     }
   }

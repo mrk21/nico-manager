@@ -29,23 +29,23 @@ export class Spec extends Base.Spec<Props, State> {
             
         case SessionStore.AuthState.AUTHENTICATED:
             return React.jsx(`
-                <article className="page">
-                    <header className="page__header">
-                        <div className="page__header-content">
+                <article className="l-page">
+                    <header className="l-page__header">
+                        <div className="l-page__header-content">
                             <h1><Link to="/">nico-manager</Link></h1>
-                            <div className="page__user">
-                                <section className="page__user-info">
+                            <div className="l-page__user">
+                                <section className="l-page__user-info">
                                     <img src={this.state.session.user.avatar} />
                                     <p>{this.state.session.user.nickname}</p>
                                 </section>
-                                <menu className="page__user-menu">
+                                <menu className="l-page__user-menu">
                                    <li><button ref="signOut" onClick={this.onSignout}>sign out</button></li>
                                 </menu>
                             </div>
                         </div>
                     </header>
                     
-                    <section className="page__body">
+                    <section className="l-page__body">
                         <RouteHandler {...this.props} />
                     </section>
                 </article>
