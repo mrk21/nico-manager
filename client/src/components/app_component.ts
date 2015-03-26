@@ -3,8 +3,11 @@ import Router = require("react-router");
 import Base = require('./base');
 import SessionStore = require('../stores/session_store');
 import SigninFormComponent = require('./signin_form_component');
+import LoaderComponent = require('./loader_component');
 import RouteHandler = Router.RouteHandler;
 import Link = Router.Link;
+import SigninForm = SigninFormComponent.Component;
+import Loader = LoaderComponent.Component;
 
 export interface Props extends Base.Props {}
 export interface State extends Base.State {
@@ -48,17 +51,19 @@ export class Spec extends Base.Spec<Props, State> {
                     <section className="l-page__body">
                         <RouteHandler {...this.props} />
                     </section>
+                    
+                    <Loader />
                 </article>
             `);
             
         default:
-            var SigninForm = SigninFormComponent.Component;
             return React.jsx(`
                 <article className="signin">
                     <div className="signin__wrapper">
                         <h1>nico-manager</h1>
                         <SigninForm ref="signIn" {...this.props} />
                     </div>
+                    <Loader />
                 </article>
             `);
         }

@@ -3,6 +3,7 @@ import SessionAction = require('./actions/session_action');
 import EntryAction = require('./actions/entry_action');
 import TagAction = require('./actions/tag_action');
 import MylistAction = require('./actions/mylist_action');
+import AppAction = require('./actions/app_action');
 
 class Actions {
     session = {
@@ -20,6 +21,10 @@ class Actions {
     mylist = {
         index: Action.handler(MylistAction.Index),
         entry: Action.handler(MylistAction.Entry)
+    };
+    app = {
+        loading: Action.handler(AppAction.Loading),
+        load: Action.handler(AppAction.Load)
     };
 }
 

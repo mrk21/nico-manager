@@ -1,0 +1,28 @@
+.c-loader {
+  self = 'c-loader';
+  
+  position: fixed;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  transition: z-index 0.3s ease;
+  
+  .throbber {
+    position: fixed;
+    left: 80px;
+    bottom: 30px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  &.is-active {
+    z-index: 1000;
+    
+    .throbber {
+      margin: auto;
+      opacity: 1;
+    }
+  }
+}
