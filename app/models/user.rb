@@ -48,6 +48,7 @@ class User < ActiveRecord::Base
   def fetch_mylist
     save_entries = lambda do |mylist, entries|
       entries.to_a.each do |entry|
+        next if entry['item_type'].to_i != 0
         video_attributes = {
           video_id:       entry['item_data']['video_id'],
           title:          entry['item_data']['title'],
@@ -122,15 +123,23 @@ class User < ActiveRecord::Base
   end
   
   def fetch_video_detail
-    videos = Hash[*self.videos.map{|r| [r.video_id, r]}.flatten]
-    details = NicoApi::VideoArray.new.get(videos.keys)
-    details.each do |detail|
-      video = videos[detail['video']['id']]
-      video.description = detail['video']['description']
-      detail['tags']['tag_info'].each do |tag|
-        video.tag_list.add(tag['tag'])
+    self.videos.find_in_batches(batch_size: 20) do |videos|
+      videos = Hash[*videos.map{|r| [r.video_id, r]}.flatten]
+      details = NicoApi::VideoArray.new.get(videos.keys)
+      details.to_a.each do |detail|
+        video = videos[detail['video']['id']]
+        video.description = detail['video']['description']
+        detail['tags']['tag_info'].to_a.each do |tag|
+          case tag
+          when Hash then
+            video.tag_list.add(tag['tag'])
+          else
+            video.tag_list.add(tag.to_s)
+          end
+        end
+        video.save
       end
-      video.save
+      sleep 0.2
     end
   end
 end

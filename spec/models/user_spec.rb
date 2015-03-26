@@ -103,6 +103,19 @@ RSpec.describe User, type: :model do
       expect(Video.all.map{|r| r.dup.attributes}).to eq [self.video.attributes]
     end
     
+    context 'when data were mixed a non video item' do
+      let(:video){ FactoryGirl.build :video }
+      let(:deflist_data){ JSON.parse(File.read('spec/fixtures/nico_api_deflist/ok_with_non_video_item.json'))['mylistitem'] }
+      
+      it 'should create mylist' do
+        expect(Mylist.all.map{|r| r.dup.attributes}).to eq [self.mylist.attributes]
+      end
+      
+      it 'should create videos' do
+        expect(Video.all.map{|r| r.dup.attributes}).to eq [self.video.attributes]
+      end
+    end
+    
     context 'with other mylist' do
       let(:mylist_2){ FactoryGirl.build :mylist_2 }
       let(:video_3){ FactoryGirl.build :video_3 }
@@ -173,6 +186,22 @@ RSpec.describe User, type: :model do
     it 'should set a description to this video' do
       self.user.videos.each do |video|
         expect(video.description).to eq self.expected[video.video_id]['description']
+      end
+    end
+    
+    context 'when "tags/tag_info" of fetch data was string' do
+      let(:data){YAML.load(File.read "spec/fixtures/video_array/ok_#{self.video_ids.join('_')}_plane_tags.yml")}
+      
+      it 'should set tags to this video' do
+        self.user.videos.each do |video|
+          expect(video.tag_list.sort).to eq self.expected[video.video_id]['tags'].sort
+        end
+      end
+      
+      it 'should set a description to this video' do
+        self.user.videos.each do |video|
+          expect(video.description).to eq self.expected[video.video_id]['description']
+        end
       end
     end
   end
