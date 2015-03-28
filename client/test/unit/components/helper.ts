@@ -14,6 +14,7 @@ class Helper<ComponentType extends React.CompositeComponent<any,any>> {
     
     constructor(
         componentClass: React.ComponentClass<any>,
+        componentProps: any,
         done: Function,
         callback?: (helper: Helper<ComponentType>) => void
     ) {
@@ -42,10 +43,10 @@ class Helper<ComponentType extends React.CompositeComponent<any,any>> {
         if (callback) callback(this);
         
         (<any>React).withContext(this.context, () => {
+            componentProps.flux = new Fluxxor.Flux(this.stores, this.actions);
+            
             this.component = TestUtils.renderIntoDocument<ComponentType>(
-                React.createElement(componentClass, {
-                    flux: new Fluxxor.Flux(this.stores, this.actions)
-                })
+                React.createElement(componentClass, componentProps)
             );
             done();
         });

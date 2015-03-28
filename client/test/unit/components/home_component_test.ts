@@ -29,7 +29,7 @@ class MyHelper extends Helper<HomeComponent.Component> {}
     }
     
     beforeEach((done) => {
-        helper = new MyHelper(HomeComponent.Component, done, helperCallback);
+        helper = new MyHelper(HomeComponent.Component, {}, done, helperCallback);
     });
     
     context('when mounted', () => {

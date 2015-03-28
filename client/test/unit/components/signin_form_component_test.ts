@@ -17,7 +17,7 @@ class MyHelper extends Helper<SigninFormComponent.Component> {}
     var helperCallback = (helper: MyHelper) => {}
     
     beforeEach((done) => {
-        helper = new MyHelper(SigninFormComponent.Component, done, helperCallback);
+        helper = new MyHelper(SigninFormComponent.Component, {}, done, helperCallback);
     });
     
     context('when submitted', () => {

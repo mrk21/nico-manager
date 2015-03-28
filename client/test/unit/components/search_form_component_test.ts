@@ -20,7 +20,7 @@ class MyHelper extends Helper<SearchFormComponent.Component> {}
     });
     
     beforeEach((done) => {
-        helper = new MyHelper(SearchFormComponent.Component, done, helperCallback);
+        helper = new MyHelper(SearchFormComponent.Component, {}, done, helperCallback);
     });
     
     context('when mounted', () => {

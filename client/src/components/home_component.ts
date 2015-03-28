@@ -69,7 +69,11 @@ export class Spec extends Base.Spec<Props, State> {
             <article className="l-entry">
                 <div className="l-entry__nav">
                     <nav className="l-entry__mylists">
-                        <h3>mylists</h3>
+                        <header className="l-entry__group">
+                            <h3>mylists</h3>
+                            <p className="l-entry__group-count">{this.state.mylist.list.length}</p>
+                        </header>
+                        
                         <ul className="c-mylist-list" ref="mylistList">{this.state.mylist.list.map((mylist) =>
                             <li className="c-mylist-list__list-item" key={mylist.group_id} title={mylist.name}>
                                 <Link to="mylist_entries" params={{group_id: mylist.group_id}}>
@@ -81,7 +85,11 @@ export class Spec extends Base.Spec<Props, State> {
                     </nav>
                     
                     <nav className="l-entry__tags">
-                        <h3>tags</h3>
+                        <header className="l-entry__group">
+                            <h3>tags</h3>
+                            <p className="l-entry__group-count">{this.state.tag.list.length}</p>
+                        </header>
+                        
                         <ul className="c-tag-list" ref="tagList">{this.state.tag.list.map((tag) =>
                             <li className="c-tag-list__list-item" key={tag.name} title={tag.name}>
                                 <Link to="tag_entries" params={{name: tag.name}}>
@@ -94,7 +102,10 @@ export class Spec extends Base.Spec<Props, State> {
                 </div>
                 
                 <section className="l-entry__entries">
-                    <h2>entries</h2>
+                    <header className="l-entry__group">
+                        <h2>entries</h2>
+                        <p className="l-entry__group-count">{this.state.entry.list.length}</p>
+                    </header>
                     
                     <div className="l-entry__search">
                         <SearchForm ref="searchForm" />

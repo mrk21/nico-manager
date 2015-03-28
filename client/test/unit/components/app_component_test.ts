@@ -22,7 +22,7 @@ class MyHelper extends Helper<AppComponent.Component> {}
     }
     
     beforeEach((done) => {
-        helper = new MyHelper(AppComponent.Component, done, helperCallback);
+        helper = new MyHelper(AppComponent.Component, {}, done, helperCallback);
     });
     
     context('when mounted', () => {

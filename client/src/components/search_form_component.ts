@@ -13,7 +13,7 @@ export class Spec extends Base.Spec<Props, State> {
     getInitialState() {
         return {
             text: this.getTextFromQuery(),
-            path: this.getPath()
+            path: this.getPathname()
         };
     }
     
@@ -26,7 +26,7 @@ export class Spec extends Base.Spec<Props, State> {
         if (this.getPath() != this.state.path) {
             this.setState({
                 text: this.getTextFromQuery(),
-                path: this.getPath()
+                path: this.getPathname()
             });
         }
     }
