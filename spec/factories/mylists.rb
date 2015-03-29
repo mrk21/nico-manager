@@ -23,6 +23,7 @@ FactoryGirl.define do
   factory :mylist_template, class: Mylist do
     transient do
       entries_params []
+      entries_num 5
     end
     
     sequence(:group_id)
@@ -33,9 +34,10 @@ FactoryGirl.define do
     
     after(:create) do |mylist, evaluator|
       params = evaluator.entries_params
+      num = evaluator.entries_num
       
       if params.empty? then
-        5.times{ create(:entry_template, mylist: mylist) }
+        num.times{ create(:entry_template, mylist: mylist) }
       else
         params.each do |param|
           create(:entry_template, param.merge(mylist: mylist))

@@ -19,4 +19,8 @@ class Entry < ActiveRecord::Base
       }
     )
   }
+  
+  scope :paginate, ->(offset = nil, limit = nil){
+    self.offset(offset || 0).limit(limit || 50)
+  }
 end

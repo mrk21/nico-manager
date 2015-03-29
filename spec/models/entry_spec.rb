@@ -40,4 +40,37 @@ RSpec.describe Entry, type: :model do
       end
     end
   end
+  
+  describe '#paginate(offset, limit)' do
+    before do
+      FactoryGirl.create(:user_template, mylists_params: [{
+        entries_num: 200
+      }])
+    end
+    
+    let(:offset){20}
+    let(:limit){20}
+    subject { Entry.paginate(self.offset, self.limit) }
+    
+    it 'should be records of range between the offset and the offset plus the limit' do
+      expect(subject.first.id).to eq Entry.offset(self.offset).limit(1).first.id
+      expect(subject.count).to eq self.limit
+    end
+    
+    context 'when the limit was nil' do
+      let(:limit){}
+      
+      it 'should limit to 50 records' do
+        expect(subject.count).to eq 50
+      end
+    end
+    
+    context 'when the offset was nil' do
+      let(:offset){}
+      
+      it 'should start  from beginning' do
+        expect(subject.first.id).to eq Entry.first.id
+      end
+    end
+  end
 end
