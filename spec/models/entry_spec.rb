@@ -41,35 +41,47 @@ RSpec.describe Entry, type: :model do
     end
   end
   
-  describe '#paginate(offset, limit)' do
+  describe '#paginate(offset, num)' do
     before do
       FactoryGirl.create(:user_template, mylists_params: [{
         entries_num: 200
       }])
     end
     
-    let(:offset){20}
-    let(:limit){20}
-    subject { Entry.paginate(self.offset, self.limit) }
+    let(:page){2}
+    let(:num){20}
+    subject { Entry.paginate(self.page, self.num) }
     
-    it 'should be records of range between the offset and the offset plus the limit' do
-      expect(subject.first.id).to eq Entry.offset(self.offset).limit(1).first.id
-      expect(subject.count).to eq self.limit
+    it 'should be records of the page' do
+      expect(subject.first.id).to eq Entry.offset((self.page - 1) * self.num).limit(1).first.id
+      expect(subject.count).to eq self.num
     end
     
-    context 'when the limit was nil' do
-      let(:limit){}
+    context 'when the num was nil' do
+      let(:num){}
       
-      it 'should limit to 50 records' do
+      it 'should return 50 records' do
         expect(subject.count).to eq 50
       end
     end
     
-    context 'when the offset was nil' do
-      let(:offset){}
+    context 'when the page was nil' do
+      let(:page){}
       
-      it 'should start  from beginning' do
+      it 'should start from beginning' do
         expect(subject.first.id).to eq Entry.first.id
+      end
+    end
+    
+    context 'when the page less than 1' do
+      [-2,-1,0].each do |p|
+        context p do
+          let(:page){p}
+          
+          it 'should start from beginning' do
+            expect(subject.first.id).to eq Entry.first.id
+          end
+        end
       end
     end
   end
