@@ -41,7 +41,7 @@ RSpec.describe Entry, type: :model do
     end
   end
   
-  describe '#paginate(offset, num)' do
+  describe '#paginate(page, num)' do
     before do
       FactoryGirl.create(:user_template, mylists_params: [{
         entries_num: 200
