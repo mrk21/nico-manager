@@ -1,9 +1,9 @@
 class Api::EntriesController < ApplicationController
+  include EntriesAPI
+  
   before_action :require_authentication
   
   def index
-    @entries = @current_user.entries
-      .includes(:video, :mylist)
-      .search(params[:q])
+    self.entries_api_index(@current_user.entries)
   end
 end

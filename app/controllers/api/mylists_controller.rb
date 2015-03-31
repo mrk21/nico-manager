@@ -1,4 +1,6 @@
 class Api::MylistsController < ApplicationController
+  include EntriesAPI
+  
   before_action :require_authentication
   
   def index
@@ -6,10 +8,10 @@ class Api::MylistsController < ApplicationController
   end
   
   def entries
-    @entries = @current_user.mylists.find_by(self.entries_params).entries
-      .includes(:video, :mylist)
-      .search(params[:q])
-    render template: '/api/entries/index'
+    self.entries_api_index(@current_user.mylists
+      .find_by(self.entries_params)
+      .entries
+    )
   end
   
   protected

@@ -1,4 +1,6 @@
 class Api::TagsController < ApplicationController
+  include EntriesAPI
+  
   before_action :require_authentication
   
   def index
@@ -6,11 +8,9 @@ class Api::TagsController < ApplicationController
   end
   
   def entries
-    @entries = @current_user.entries
-      .includes(:video, :mylist)
+    self.entries_api_index(@current_user.entries
       .tagged_with(self.entries_params)
-      .search(params[:q])
-    render template: '/api/entries/index'
+    )
   end
   
   protected
