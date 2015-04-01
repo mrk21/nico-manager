@@ -47,7 +47,8 @@ RSpec.describe "Api::Entries", type: :request do
       entries_params: [
         {video_params: {tag_list: ['a']}},
         {video_params: {tag_list: ['a','b']}},
-      ]
+        {video_params: {tag_list: []}}
+      ].flatten
     ]]
     
     let(:other_user){ FactoryGirl.create *user_traits }
@@ -65,6 +66,19 @@ RSpec.describe "Api::Entries", type: :request do
         it 'should be all entries of the authenticated user matching the search params' do
           is_expected.to eq 200
           self.expect_entries(self.current_user.entries.search(self.params[:q]))
+        end
+      end
+      
+      context 'with Range HTTP header' do
+        let(:headers){{
+          'Range'=> 'records=1-2'
+        }}
+        
+        it 'should be entries specified the Range HTTP header' do
+          is_expected.to eq 206
+          expect(response.headers['Accept-Ranges']).to eq 'records'
+          expect(response.headers['Content-Range']).to eq 'records 1-2/3'
+          self.expect_entries(self.current_user.entries.offset(1).limit(1))
         end
       end
     end
