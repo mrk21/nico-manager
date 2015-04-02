@@ -40,49 +40,4 @@ RSpec.describe Entry, type: :model do
       end
     end
   end
-  
-  describe '#paginate(page, num)' do
-    before do
-      FactoryGirl.create(:user_template, mylists_params: [{
-        entries_num: 200
-      }])
-    end
-    
-    let(:page){2}
-    let(:num){20}
-    subject { Entry.paginate(self.page, self.num) }
-    
-    it 'should be records of the page' do
-      expect(subject.first.id).to eq Entry.offset((self.page - 1) * self.num).limit(1).first.id
-      expect(subject.count).to eq self.num
-    end
-    
-    context 'when the num was nil' do
-      let(:num){}
-      
-      it 'should return 50 records' do
-        expect(subject.count).to eq 50
-      end
-    end
-    
-    context 'when the page was nil' do
-      let(:page){}
-      
-      it 'should start from beginning' do
-        expect(subject.first.id).to eq Entry.first.id
-      end
-    end
-    
-    context 'when the page less than 1' do
-      [-2,-1,0].each do |p|
-        context p do
-          let(:page){p}
-          
-          it 'should start from beginning' do
-            expect(subject.first.id).to eq Entry.first.id
-          end
-        end
-      end
-    end
-  end
 end

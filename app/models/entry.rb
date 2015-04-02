@@ -19,11 +19,4 @@ class Entry < ActiveRecord::Base
       }
     )
   }
-  
-  scope :paginate, ->(page = nil, num = nil){
-    page ||= 1
-    num ||= 50
-    page = 1 if page < 1
-    self.offset((page - 1) * num).limit(num)
-  }
 end
