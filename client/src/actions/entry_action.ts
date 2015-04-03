@@ -3,12 +3,8 @@ import Action = require('./base');
 import Api = require('../api');
 import dispatchLoader = require('./dispatch_loader');
 
-export interface Data {
-    records: Api.EntryListItem[];
-    range?: Api.Range;
-}
 
-export class Index extends Action.Base<Data | Api.Message> {
+export class Index extends Action.Base<Api.ListWithRange<Api.EntryListItem> | Api.Message> {
     handler(query?: string, range?: Api.Range) {
         var sendQuery: any = query ? {q: query} : {};
         
@@ -32,13 +28,16 @@ export class Index extends Action.Base<Data | Api.Message> {
                         });
                     }
                     else {
-                        var rangeHeader = res.header['content-range'].split('/');
-                        var range = rangeHeader[0].split('-');
+                        var contentRange = res.header['content-range'].split('/');
+                        var range = contentRange[0].split('-');
+                        var total = contentRange[1];
+                        
                         this.dispatch('entry:set', {
                             records: JSON.parse(res.text),
                             range: {
-                                since: range[0],
-                                until: range[1]
+                                since: range[0]-0,
+                                until: range[1]-0,
+                                total: total-0
                             }
                         });
                     }

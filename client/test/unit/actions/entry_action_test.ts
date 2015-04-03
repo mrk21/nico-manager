@@ -17,10 +17,10 @@ import Api = require('../../../src/api');
         var range: Api.Range;
         
         before(() => {
-            range = null
+            range = null;
             response = {
                 status: 200,
-                body: <any>[{
+                body: [{
                     video: {video_id: 'sm9'}
                 }]
             };
@@ -31,7 +31,10 @@ import Api = require('../../../src/api');
             
             if (range) {
                 scope.matchHeader('Range', `records=${range.since}-${range.until}`);
-                scope.reply(response.status, response.body, {'Accept-Ranges': 'records', 'Content-Range': '1-2/3'});
+                scope.reply(response.status, response.body, {
+                    'Accept-Ranges': 'records',
+                    'Content-Range': `${range.since}-${range.until}/${range.total}`
+                });
             }
             else {
                 scope.reply(response.status, response.body);
@@ -61,7 +64,8 @@ import Api = require('../../../src/api');
                 };
                 range = {
                     since: 1,
-                    until: 2
+                    until: 2,
+                    total: 3
                 };
             });
             
@@ -70,10 +74,7 @@ import Api = require('../../../src/api');
                 var spy = sinon.spy(action, 'dispatch');
                 var payload = {
                     records: response.body,
-                    range: {
-                        since: 1,
-                        until: 2
-                    }
+                    range: range
                 };
                 
                 action.handler(null, payload.range);
@@ -86,9 +87,10 @@ import Api = require('../../../src/api');
         
         context('when not authenticated', () => {
             before(() => {
+                range = null;
                 response = {
                     status: 401,
-                    body: <any>{
+                    body: {
                         message: 'Not authenticated'
                     }
                 };

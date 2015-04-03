@@ -17,8 +17,8 @@ export class Store extends FluxxorStore {
         );
     }
     
-    onSet(payload: Api.EntryListItem[]) {
-        this.state.list = payload;
+    onSet(payload: Api.ListWithRange<Api.EntryListItem>) {
+        this.state.list = payload.records;
         this.state.isFetched = true;
         this.emit("change");
     }

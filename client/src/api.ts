@@ -58,7 +58,13 @@ export class MylistListItem {
     description: string;
 }
 
-export class Range {
+export interface Range {
     since: number;
     until: number;
+    total?: number;
+}
+
+export interface ListWithRange<ListItem> {
+    records: ListItem[];
+    range?: Range;
 }
