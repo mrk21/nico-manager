@@ -57,3 +57,8 @@ export class MylistListItem {
     created_time: string;
     description: string;
 }
+
+export class Range {
+    since: number;
+    until: number;
+}
