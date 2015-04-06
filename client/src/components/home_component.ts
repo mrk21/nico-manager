@@ -5,14 +5,15 @@ import EntryStore = require('../stores/entry_store');
 import MylistStore = require('../stores/mylist_store');
 import TagStore = require('../stores/tag_store');
 import SearchFormComponent = require('../components/search_form_component');
+import TagListComponent = require('../components/tag_list_component');
 import Link = Router.Link;
 import SearchForm = SearchFormComponent.Component;
+import TagList = TagListComponent.Component;
 
 export interface Props extends Base.Props {}
 export interface State extends Base.State {
     entry?: EntryStore.State;
     mylist?: MylistStore.State;
-    tag?: TagStore.State;
     path?: string;
 }
 
@@ -27,14 +28,12 @@ export class Spec extends Base.Spec<Props, State> {
         return {
             entry: this.getFlux().store('entry').state,
             mylist: this.getFlux().store('mylist').state,
-            tag: this.getFlux().store('tag').state
         };
     }
     
     componentWillMount() {
         this.updateEntries();
         this.getFlux().actions.mylist.index();
-        this.getFlux().actions.tag.index();
     }
     
     componentDidUpdate() {
@@ -62,7 +61,7 @@ export class Spec extends Base.Spec<Props, State> {
     render() {
         var that = this;
         
-        if (!this.state.entry.isFetched || !this.state.mylist.isFetched || !this.state.tag.isFetched) {
+        if (!this.state.entry.isFetched || !this.state.mylist.isFetched) {
             return React.jsx(`<article />`);
         }
         return React.jsx(`
@@ -84,21 +83,7 @@ export class Spec extends Base.Spec<Props, State> {
                         )}</ul>
                     </nav>
                     
-                    <nav className="l-entry__tags">
-                        <header className="l-entry__group">
-                            <h3>tags</h3>
-                            <p className="l-entry__group-count">{this.state.tag.list.length}</p>
-                        </header>
-                        
-                        <ul className="c-tag-list" ref="tagList">{this.state.tag.list.map((tag) =>
-                            <li className="c-tag-list__list-item" key={tag.name} title={tag.name}>
-                                <Link to="tag_entries" params={{name: tag.name}}>
-                                    <p className="c-tag-list__name">{tag.name}</p>
-                                    <p className="c-tag-list__count">{tag.count}</p>
-                                </Link>
-                            </li>
-                        )}</ul>
-                    </nav>
+                    <TagList />
                 </div>
                 
                 <section className="l-entry__entries">
@@ -138,4 +123,4 @@ export class Spec extends Base.Spec<Props, State> {
 }
 
 export type Component = Base.Component<Props, State>;
-export var Component = Base.createClass(Spec, ['entry','mylist','tag']);
+export var Component = Base.createClass(Spec, ['entry','mylist']);

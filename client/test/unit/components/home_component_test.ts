@@ -41,10 +41,6 @@ class MyHelper extends Helper<HomeComponent.Component> {}
             assert(mylistActionMock.verify());
         });
         
-        it('should invoke tag.index action', () => {
-            assert(tagActionMock.verify());
-        });
-        
         it('should render an empty view', () => {
             assert(helper.component.getDOMNode<HTMLElement>().innerHTML === '');
         });
@@ -110,10 +106,6 @@ class MyHelper extends Helper<HomeComponent.Component> {}
             helper.stores.mylist.onSet([<any>{
                 group_id: 1
             }]);
-            helper.stores.tag.onSet([<any>{
-                name: 'tag1',
-                count: 3
-            }]);
         });
         
         it('should exist a search form', () => {
@@ -126,10 +118,6 @@ class MyHelper extends Helper<HomeComponent.Component> {}
         
         it('should exist a mylist list', () => {
             assert(helper.component.refs['mylistList'] !== undefined);
-        });
-        
-        it('should exist a tag list', () => {
-            assert(helper.component.refs['tagList'] !== undefined);
         });
     });
 });
