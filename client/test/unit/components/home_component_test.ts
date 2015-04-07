@@ -37,10 +37,6 @@ class MyHelper extends Helper<HomeComponent.Component> {}
             assert(entryActionMock.verify());
         });
         
-        it('should invoke mylist.index action', () => {
-            assert(mylistActionMock.verify());
-        });
-        
         it('should render an empty view', () => {
             assert(helper.component.getDOMNode<HTMLElement>().innerHTML === '');
         });
@@ -56,7 +52,6 @@ class MyHelper extends Helper<HomeComponent.Component> {}
                     entryActionMock = sinon.mock(helper.actions.entry);
                     
                     mylistActionMock = sinon.mock(helper.actions.mylist);
-                    mylistActionMock.expects('index').once();
                     mylistActionMock.expects('entry').withArgs(groupId).once();
                     
                     tagActionMock = sinon.mock(helper.actions.tag);
@@ -114,10 +109,6 @@ class MyHelper extends Helper<HomeComponent.Component> {}
         
         it('should exist an entry list', () => {
             assert(helper.component.refs['entryList'] !== undefined);
-        });
-        
-        it('should exist a mylist list', () => {
-            assert(helper.component.refs['mylistList'] !== undefined);
         });
     });
 });
