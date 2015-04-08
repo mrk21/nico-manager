@@ -58,8 +58,8 @@ export class Spec extends Base.Spec<Props, State> {
             
         default:
             return React.jsx(`
-                <article className="signin">
-                    <div className="signin__wrapper">
+                <article className="l-signin">
+                    <div className="l-signin__wrapper">
                         <h1>nico-manager</h1>
                         <SigninForm ref="signIn" {...this.props} />
                     </div>

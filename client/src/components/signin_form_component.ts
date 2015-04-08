@@ -31,11 +31,11 @@ export class Spec extends Base.Spec<Props, State> {
     render() {
         if (this.state.session.auth == SessionStore.AuthState.AUTHENTICATION_FAILED) {
             var errorMessage = React.jsx(`
-                <p className="signin__error" ref="errorMessage">sign-in failed</p>
+                <p className="l-signin__error" ref="errorMessage">sign-in failed</p>
             `);
         }
         return React.jsx(`
-            <form className="signin__form" onSubmit={this.onSubmit}>
+            <form className="l-signin__form" onSubmit={this.onSubmit}>
                 {errorMessage}
                 <input type="text"
                     placeholder="mail"
