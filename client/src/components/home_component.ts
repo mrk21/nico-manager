@@ -5,6 +5,7 @@ import Base = require('./base');
 import EntryStore = require('../stores/entry_store');
 import MylistStore = require('../stores/mylist_store');
 import TagStore = require('../stores/tag_store');
+import Api = require('../api');
 
 import SearchFormComponent = require('../components/search_form_component');
 import TagListComponent = require('../components/tag_list_component');
@@ -50,7 +51,8 @@ export class Spec extends Base.Spec<Props, State> {
     updateEntries() {
         var params: any = this.getParams() || {};
         var query: any = this.getQuery() || {};
-        var currentPage: number = query.p || 1;
+        var currentPage: number = query.p-0 || 1;
+        console.log(currentPage);
         var range: Api.Range = {
             since: 20 * (currentPage - 1),
             until: 20 * (currentPage),
@@ -75,7 +77,7 @@ export class Spec extends Base.Spec<Props, State> {
         }
         
         var query: any = this.getQuery() || {};
-        var currentPage: number = query.p || 1;
+        var currentPage: number = query.p-0 || 1;
         var paginationProps: PaginationComponent.Props = {
             flux: this.getFlux(),
             total: this.state.entry.range.total,

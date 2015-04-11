@@ -22,17 +22,20 @@ export class Spec extends Base.Spec<Props, State> {
         var links: any[] = [];
         
         for (var page = 1; page <= pageNum; page++) {
-            var linkProps = this.props.getLinkProps(page);
+            var stateClassName = '';
+            if (page === this.props.currentPage) {
+                stateClassName = 'is-active';
+            }
             links.push(React.jsx(`
-                <li key={page} ref={'link.'+ page}>
-                    <Link to={linkProps.to} params={linkProps.params} query={linkProps.query}>{page}</Link>
+                <li key={page} ref={'link.'+ page} className={'c-pagination__page-list-item '+ stateClassName}>
+                    <Link {...this.props.getLinkProps(page)}>{page}</Link>
                 </li>
             `));
         }
         
         return React.jsx(`
-            <nav>
-                <ul>{links}</ul>
+            <nav className="c-pagination">
+                <ul className="c-pagination__page-list">{links}</ul>
             </nav>
         `);
     }

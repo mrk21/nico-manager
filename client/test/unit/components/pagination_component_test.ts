@@ -21,7 +21,7 @@ class MyHelper extends Helper<PaginationComponent.Component> {}
             flux: null,
             total: 100,
             perPage: 30,
-            currentPage: 1,
+            currentPage: 2,
             getLinkProps: (page) => {
                 return {
                     to: 'home',
@@ -43,6 +43,11 @@ class MyHelper extends Helper<PaginationComponent.Component> {}
                 if (key.match(/link\./)) count++;
             }
             assert(count === 4);
+        });
+        
+        it('should set "is-active" class to the current page element', () => {
+            var activeElement = helper.component.refs[`link.${props.currentPage}`];
+            assert(activeElement.getDOMNode<HTMLElement>().className.match('is-active'));
         });
     });
 });
