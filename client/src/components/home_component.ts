@@ -52,7 +52,6 @@ export class Spec extends Base.Spec<Props, State> {
         var params: any = this.getParams() || {};
         var query: any = this.getQuery() || {};
         var currentPage: number = query.p-0 || 1;
-        console.log(currentPage);
         var range: Api.Range = {
             since: 20 * (currentPage - 1),
             until: 20 * (currentPage),
@@ -82,6 +81,7 @@ export class Spec extends Base.Spec<Props, State> {
             flux: this.getFlux(),
             total: this.state.entry.range.total,
             perPage: 20,
+            maxLinkCount: 5,
             currentPage: currentPage,
             getLinkProps: (page: number) => {
                 var query: any = this.getQuery() || {};
@@ -105,7 +105,7 @@ export class Spec extends Base.Spec<Props, State> {
                 <section className="l-entry__entries">
                     <header className="l-entry__group">
                         <h2>entries</h2>
-                        <p className="l-entry__group-count">{this.state.entry.list.length}</p>
+                        <p className="l-entry__group-count">{this.state.entry.range.total}</p>
                     </header>
                     
                     <div className="l-entry__search">
