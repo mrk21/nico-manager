@@ -1,0 +1,84 @@
+.c-pagination {
+  self = 'c-pagination';
+  item-size = 34px;
+  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+  padding: 0;
+  text-align: center;
+  
+  /{$element(self, to-base)} {
+    position: relative;
+    height: 0;
+    width: (item-size);
+    padding-top: (item-size);
+    overflow: hidden;
+    
+    &:before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      content: '';
+      line-height: (item-size);
+      letter-spacing: -3px;
+      padding-right: 3px;
+      font-weight: 700;
+    }
+  }
+  
+  /{element(self, to-first)} {
+    @extend {$element(self, to-base)};
+    &:before { content: '<<'; }
+  }
+  
+  /{element(self, to-last)} {
+    @extend {$element(self, to-base)};
+    &:before { content: '>>'; }
+  }
+  
+  /{element(self, to-next)} {
+    @extend {$element(self, to-base)};
+    &:before { content: '>'; }
+  }
+  
+  /{element(self, to-previous)} {
+    @extend {$element(self, to-base)};
+    &:before { content: '<'; }
+  }
+  
+  /{element(self, page-list)} {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    margin: 0 auto;
+    padding: 0;
+    
+    /{element(self, page-list-item)} {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      
+      width: (item-size);
+      height: (item-size);
+      font-weight: 700;
+      margin: auto;
+      font-size: 14px;
+      
+      a {
+        display: block;
+        flex-grow: 1;
+        text-decoration: none;
+      }
+      
+      &.is-active {
+        border: 1px solid #ddd;
+        border-radius: (item-size/2);
+      }
+    }
+  }
+}
