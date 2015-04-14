@@ -58,10 +58,10 @@ export class Spec extends Base.Spec<Props, State> {
         };
         
         if (this.isActive('mylist_entries')) {
-            this.getFlux().actions.mylist.entry(params.group_id, query.q);
+            this.getFlux().actions.mylist.entry(params.group_id, query.q, range);
         }
         else if (this.isActive('tag_entries')) {
-            this.getFlux().actions.tag.entry(params.name, query.q);
+            this.getFlux().actions.tag.entry(params.name, query.q, range);
         }
         else {
             this.getFlux().actions.entry.index(query.q, range);

@@ -73,30 +73,9 @@ import Api = require('../../../src/api');
             var spy = sinon.spy(action, 'dispatch');
             action.handler(groupId);
             setTimeout(() => {
-                assert(spy.withArgs("entry:set", response.body).calledOnce);
+                assert(spy.withArgs("entry:set", {records: response.body}).calledOnce);
                 done();
             }, 10);
-        });
-        
-        context('when not authenticated', () => {
-            before(() => {
-                response = {
-                    status: 401,
-                    body: <any>{
-                        message: 'Not authenticated'
-                    }
-                };
-            });
-            
-            it('should dispatch with "session:unset" action and the error message', (done) => {
-                var action = new MylistAction.Entry();
-                var spy = sinon.spy(action, 'dispatch');
-                action.handler(groupId);
-                setTimeout(() => {
-                    assert(spy.withArgs("session:unset", response.body).calledOnce);
-                    done();
-                }, 10);
-            });
         });
     });
 });

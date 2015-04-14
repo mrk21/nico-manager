@@ -6,6 +6,11 @@ export class Base<Payload> {
     handler(...args: any[]): void {}
 }
 
-export function handler(action: Function): Function {
-    return action.prototype.handler;
+export function handler(Action: Function): Function {
+    var action = new (<any>Action)();
+    return function(...args: any[]) {
+        action.flux = this.flux;
+        action.dispatch = this.dispatch.bind(this);
+        action.handler.apply(action, args);
+    };
 }
