@@ -23,7 +23,7 @@ export class Spec extends Base.Spec<Props, State> {
     }
     
     componentDidUpdate() {
-        if (this.getPath() != this.state.path) {
+        if (this.getPathname() != this.state.path) {
             this.setState({
                 text: this.getTextFromQuery(),
                 path: this.getPathname()
