@@ -31,16 +31,14 @@ export class IndexBase extends Action.Base<Api.ListWithRange<Api.EntryListItem> 
                         });
                     }
                     else {
-                        var contentRange = res.header['content-range'].split('/');
-                        var range = contentRange[0].split('-');
-                        var total = contentRange[1];
+                        var range = res.header['content-range'].match(/records (\d+)-(\d+)\/(\d+)/)
                         
                         this.dispatch('entry:set', {
                             records: JSON.parse(res.text),
                             range: {
-                                since: range[0]-0,
-                                until: range[1]-0,
-                                total: total-0
+                                since: range[1]-0,
+                                until: range[2]-0,
+                                total: range[3]-0
                             }
                         });
                     }

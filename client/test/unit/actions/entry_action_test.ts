@@ -33,7 +33,7 @@ import Api = require('../../../src/api');
                 scope.matchHeader('Range', `records=${range.since}-${range.until}`);
                 scope.reply(response.status, response.body, {
                     'Accept-Ranges': 'records',
-                    'Content-Range': `${range.since}-${range.until}/${range.total}`
+                    'Content-Range': `records ${range.since}-${range.until}/${range.total}`
                 });
             }
             else {
