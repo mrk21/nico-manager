@@ -99,7 +99,7 @@ export class Spec extends Base.Spec<Props, State> {
             <article className="l-entry">
                 <div className="l-entry__nav">
                     <MylistList />
-                    <TagList />
+                    <TagList limit={50} />
                 </div>
                 
                 <section className="l-entry__entries">
