@@ -6,14 +6,17 @@ RSpec.describe Session, type: :model do
   describe '::create_by_authenticating(params)' do
     let(:expected){ FactoryGirl.build :session }
     let(:cookies){ WEBrick::Cookie.parse self.expected.cookie }
-    let(:set_cookie){[
-      "#{cookies[0]}; expires=Sat, 01-Mar-2025 12:44:38 GMT; path=/; domain=.nicovideo.jp",
-      "user_session=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT",
-      "user_session=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; path=/",
-      "user_session=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; path=/; domain=.nicovideo.jp",
-      "#{cookies[1]}; expires=Fri, 03-Apr-2015 12:44:39 GMT; path=/; domain=.nicovideo.jp",
-      "repair_history=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; path=/; domain=.nicovideo.jp",
-    ]}
+    let(:set_cookie) do
+      expires = ->(time){ (Time.now.gmtime + time).strftime('%a, %d-%b-%Y %H:%M:%S %Z') }
+      [
+        "#{self.cookies[0]}; expires=#{expires[10.years]}; path=/; domain=.nicovideo.jp",
+        "user_session=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT",
+        "user_session=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; path=/",
+        "user_session=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; path=/; domain=.nicovideo.jp",
+        "#{self.cookies[1]}; expires=#{expires[1.month]}; path=/; domain=.nicovideo.jp",
+        "repair_history=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; path=/; domain=.nicovideo.jp",
+      ]
+    end
     let(:auth){{mail: 'user_hoge@example.com', password: 'pass'}}
     
     let(:stub) do
