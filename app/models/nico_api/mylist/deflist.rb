@@ -2,7 +2,7 @@ require 'net/http'
 require 'uri'
 require 'json'
 
-class NicoApi::Deflist
+class NicoApi::Mylist::Deflist
   LIST_URL = URI.parse('http://www.nicovideo.jp/api/deflist/list')
   
   def initialize(session)

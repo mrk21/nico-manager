@@ -89,9 +89,9 @@ RSpec.describe User, type: :model do
     let(:mylist_data){}
     
     before do
-      allow_any_instance_of(NicoApi::Deflist).to receive_messages(list: self.deflist_data)
-      allow_any_instance_of(NicoApi::MylistGroup).to receive_messages(list: self.mylistgroup_data)
-      allow_any_instance_of(NicoApi::Mylist).to receive_messages(list: self.mylist_data)
+      allow_any_instance_of(NicoApi::Mylist::Deflist).to receive_messages(list: self.deflist_data)
+      allow_any_instance_of(NicoApi::Mylist::MylistGroup).to receive_messages(list: self.mylistgroup_data)
+      allow_any_instance_of(NicoApi::Mylist::Mylist).to receive_messages(list: self.mylist_data)
       self.user.fetch_mylist
     end
     
@@ -143,7 +143,7 @@ RSpec.describe User, type: :model do
       let(:deflist_data_2){ JSON.parse(File.read('spec/fixtures/nico_api_deflist/ok_2.json'))['mylistitem'] }
       
       before do
-        allow_any_instance_of(NicoApi::Deflist).to receive_messages(list: self.deflist_data_2)
+        allow_any_instance_of(NicoApi::Mylist::Deflist).to receive_messages(list: self.deflist_data_2)
         self.user.fetch_mylist
       end
       

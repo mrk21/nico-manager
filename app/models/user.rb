@@ -96,9 +96,9 @@ class User < ActiveRecord::Base
     
     mylist = Mylist.find_by(user_id: self.id, group_id: nil)
     mylist = Mylist.create(user_id: self.id, group_id: nil) if mylist.nil?
-    save_entries[mylist, NicoApi::Deflist.new(self.session).list]
+    save_entries[mylist, NicoApi::Mylist::Deflist.new(self.session).list]
     
-    mylist_group_list = NicoApi::MylistGroup.new(self.session).list.to_a
+    mylist_group_list = NicoApi::Mylist::MylistGroup.new(self.session).list.to_a
     mylist_group_list.each do |group|
       group_attributes = {
         group_id: group['id'].to_i,
@@ -118,7 +118,7 @@ class User < ActiveRecord::Base
         mylist.update(group_attributes)
       end
       
-      save_entries[mylist, NicoApi::Mylist.new(self.session, mylist.group_id).list]
+      save_entries[mylist, NicoApi::Mylist::Mylist.new(self.session, mylist.group_id).list]
     end
   end
   

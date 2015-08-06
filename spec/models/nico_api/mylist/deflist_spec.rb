@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe NicoApi::Deflist, type: :model do
+RSpec.describe NicoApi::Mylist::Deflist, type: :model do
   describe 'list' do
     let(:session){ FactoryGirl.build :session }
     let(:json){ File.read('spec/fixtures/nico_api_mylist/ok.json') }
@@ -13,7 +13,7 @@ RSpec.describe NicoApi::Deflist, type: :model do
         .to_return(status: 200, body: json)
     end
     
-    subject { NicoApi::Deflist.new(self.session).list }
+    subject { NicoApi::Mylist::Deflist.new(self.session).list }
     
     it 'should be mylist items' do
       is_expected.to eq JSON.parse(self.json)['mylistitem']
