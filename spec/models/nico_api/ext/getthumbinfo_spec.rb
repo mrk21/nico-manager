@@ -12,7 +12,7 @@ RSpec.describe NicoApi::Ext::Getthumbinfo, type: :model do
     
     subject { NicoApi::Ext::Getthumbinfo.new.get(self.video_id) }
     
-    it 'should be mylist items' do
+    it 'should be detail information of the specified video' do
       is_expected.to eq Hash.from_xml(self.xml)['nicovideo_thumb_response']['thumb']
     end
     
