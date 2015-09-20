@@ -6,7 +6,7 @@ RSpec.describe NicoApi::Ext::Getthumbinfo, type: :model do
     let(:xml){ File.read('spec/fixtures/nico_api_ext_getthumbinfo/ok_sm9.xml') }
     
     before do
-      stub_request(:get, ['http://ext.nicovvideo_ideo.jp/api/getthumbinfo', self.video_id].join('/'))
+      stub_request(:get, ['http://ext.nicovideo.jp/api/getthumbinfo', self.video_id].join('/'))
         .to_return(status: 200, body: self.xml)
     end
     

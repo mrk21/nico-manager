@@ -125,21 +125,16 @@ class User < ActiveRecord::Base
   def fetch_video_detail
     self.videos.find_in_batches(batch_size: 20) do |videos|
       videos = Hash[*videos.map{|r| [r.video_id, r]}.flatten]
-      details = NicoApi::VideoArray.new.get(videos.keys)
-      details.to_a.each do |detail|
-        video = videos[detail['video']['id']]
-        video.description = detail['video']['description']
-        detail['tags']['tag_info'].to_a.each do |tag|
-          case tag
-          when Hash then
-            video.tag_list.add(tag['tag'])
-          else
-            video.tag_list.add(tag.to_s)
-          end
+      videos.each do |video_id, video|
+        detail = NicoApi::Ext::Getthumbinfo.new.get(video_id)
+        next if detail.nil?
+        video.description = detail['description']
+        tags = detail['tags']['tag']
+        tags.each do |tag|
+          video.tag_list.add(tag)
         end
         video.save
       end
-      sleep 0.2
     end
   end
 end

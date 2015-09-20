@@ -158,51 +158,31 @@ RSpec.describe User, type: :model do
   end
   
   describe '#fetch_video_detail()' do
-    let(:video_ids){['sm25781587','sm24189468']}
-    let(:fixture_path){"spec/fixtures/video_array/ok_#{self.video_ids.join('_')}"}
-    let(:data){YAML.load(File.read "#{self.fixture_path}.yml")}
-    let(:expected){YAML.load(File.read "#{self.fixture_path}_expected.yml")}
+    let(:video_id){'sm9'}
+    let(:fixture_path){"spec/fixtures/nico_api_ext_getthumbinfo/ok_#{self.video_id}"}
+    let(:data){Hash.from_xml(File.read "#{self.fixture_path}.xml")['nicovideo_thumb_response']['thumb']}
+    let(:expected_tags){self.data['tags']['tag']}
     
     let(:user) do
       FactoryGirl.create(:user_template, mylists_params: [
-        entries_params: self.video_ids.map{|id|
-          {video_params: {video_id: id}}
-        }
+        entries_params: [
+          {video_params: {video_id: self.video_id}}
+        ]
       ])
     end
     
     before do
-      allow_any_instance_of(NicoApi::VideoArray).to receive_messages(get: self.data)
+      allow_any_instance_of(NicoApi::Ext::Getthumbinfo).to receive_messages(get: self.data)
       self.user.fetch_video_detail
       self.user.videos.reload
     end
     
     it 'should set tags to this video' do
-      self.user.videos.each do |video|
-        expect(video.tag_list.sort).to eq self.expected[video.video_id]['tags'].sort
-      end
+      expect(self.user.videos.first.tags.map(&:name)).to contain_exactly *self.expected_tags
     end
     
-    it 'should set a description to this video' do
-      self.user.videos.each do |video|
-        expect(video.description).to eq self.expected[video.video_id]['description']
-      end
-    end
-    
-    context 'when "tags/tag_info" of fetch data was string' do
-      let(:data){YAML.load(File.read "spec/fixtures/video_array/ok_#{self.video_ids.join('_')}_plane_tags.yml")}
-      
-      it 'should set tags to this video' do
-        self.user.videos.each do |video|
-          expect(video.tag_list.sort).to eq self.expected[video.video_id]['tags'].sort
-        end
-      end
-      
-      it 'should set a description to this video' do
-        self.user.videos.each do |video|
-          expect(video.description).to eq self.expected[video.video_id]['description']
-        end
-      end
+    it 'should set description to this video' do
+      expect(self.user.videos.first.description).to eq self.data['description']
     end
   end
   

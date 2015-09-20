@@ -2,7 +2,7 @@ require 'net/http'
 require 'uri'
 
 class NicoApi::Ext::Getthumbinfo
-  BASE_URL = URI.parse('http://ext.nicovvideo_ideo.jp/api/getthumbinfo')
+  BASE_URL = URI.parse('http://ext.nicovideo.jp/api/getthumbinfo')
   
   def get(video_id)
     http = Net::HTTP.new(BASE_URL.host, BASE_URL.port)
