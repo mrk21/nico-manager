@@ -158,31 +158,37 @@ RSpec.describe User, type: :model do
   end
   
   describe '#fetch_video_detail()' do
-    let(:video_id){'sm9'}
-    let(:fixture_path){"spec/fixtures/nico_api_ext_getthumbinfo/ok_#{self.video_id}"}
-    let(:data){Hash.from_xml(File.read "#{self.fixture_path}.xml")['nicovideo_thumb_response']['thumb']}
-    let(:expected_tags){self.data['tags']['tag']}
+    let(:video_ids){['sm9','sm1097445']}
+    let(:fixture_paths){self.video_ids.map{|vid| "spec/fixtures/nico_api_ext_getthumbinfo/ok_#{vid}"}}
+    let(:data){self.fixture_paths.map{|path| Hash.from_xml(File.read "#{path}.xml")['nicovideo_thumb_response']['thumb']}}
     
     let(:user) do
       FactoryGirl.create(:user_template, mylists_params: [
-        entries_params: [
-          {video_params: {video_id: self.video_id}}
-        ]
+        entries_params: self.video_ids.map{|vid|
+          {video_params: {video_id: vid}}
+        }
       ])
     end
     
     before do
-      allow_any_instance_of(NicoApi::Ext::Getthumbinfo).to receive_messages(get: self.data)
+      self.data.each do |v|
+        allow_any_instance_of(NicoApi::Ext::Getthumbinfo).to receive(:get).with(v['video_id']).and_return(v)
+      end
+      
       self.user.fetch_video_detail
       self.user.videos.reload
     end
     
-    it 'should set tags to this video' do
-      expect(self.user.videos.first.tags.map(&:name)).to contain_exactly *self.expected_tags
+    it 'should set tags to this videos' do
+      actual = self.user.videos.map{|v| v.tags.map(&:name)}.flatten
+      expected = self.data.map{|v| v['tags']['tag']}.flatten
+      expect(actual).to contain_exactly *expected
     end
     
     it 'should set description to this video' do
-      expect(self.user.videos.first.description).to eq self.data['description']
+      actual = self.user.videos.map(&:description).flatten
+      expected = self.data.map{|v| v['description']}.flatten
+      expect(actual).to contain_exactly *expected
     end
   end
   

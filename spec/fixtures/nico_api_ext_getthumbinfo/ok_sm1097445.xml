@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nicovideo_thumb_response status="ok">
+  <thumb>
+    <video_id>sm1097445</video_id>
+    <title>【初音ミク】みくみくにしてあげる♪【してやんよ】</title>
+    <description>おまえら、みっくみくにしてやんよ。歌詞はhttp://ikamo.hp.infoseek.co.jp/mikumiku.txt（9/20 1:55修正）。上げている他のもの→mylist/1450136</description>
+    <thumbnail_url>http://tn-skr2.smilevideo.jp/smile?i=1097445</thumbnail_url>
+    <first_retrieve>2007-09-20T01:22:02+09:00</first_retrieve>
+    <length>1:38</length>
+    <movie_type>flv</movie_type>
+    <size_high>3906547</size_high>
+    <size_low>2394736</size_low>
+    <view_counter>11824859</view_counter>
+    <comment_num>2779970</comment_num>
+    <mylist_counter>212896</mylist_counter>
+    <last_res_body>みっくみっくにしーて カワイイイ YYYYYYYYYYYYYYYYYYYY Mステ見忘れた... </last_res_body>
+    <watch_url>http://www.nicovideo.jp/watch/sm1097445</watch_url>
+    <thumb_type>video</thumb_type>
+    <embeddable>1</embeddable>
+    <no_live_play>0</no_live_play>
+    <tags domain="jp">
+      <tag category="1" lock="1">音楽</tag>
+      <tag lock="1">初音ミク</tag>
+      <tag lock="1">みくみくにしてあげる♪</tag>
+      <tag>ミクオリジナル曲</tag>
+      <tag>ika</tag>
+      <tag>VOCALOID</tag>
+      <tag>VOCALOID殿堂入り</tag>
+      <tag>初音ミク名曲リンク</tag>
+      <tag>元気が出るミクうた</tag>
+      <tag>VOCALOID神話入り</tag>
+      <tag>Ｍステみっく</tag>
+    </tags>
+    <user_id>70391</user_id>
+    <user_nickname>ika</user_nickname>
+    <user_icon_url>http://res.nimg.jp/img/user/thumb/blank_s.jpg</user_icon_url>
+  </thumb>
+</nicovideo_thumb_response>

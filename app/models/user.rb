@@ -1,5 +1,6 @@
 require 'uri'
 require 'nokogiri'
+require 'thread/pool'
 
 class User < ActiveRecord::Base
   has_one :session, primary_key: :niconico_id, dependent: :destroy
@@ -123,18 +124,22 @@ class User < ActiveRecord::Base
   end
   
   def fetch_video_detail
-    self.videos.find_in_batches(batch_size: 20) do |videos|
-      videos = Hash[*videos.map{|r| [r.video_id, r]}.flatten]
-      videos.each do |video_id, video|
-        detail = NicoApi::Ext::Getthumbinfo.new.get(video_id)
-        next if detail.nil?
-        video.description = detail['description']
-        tags = detail['tags']['tag']
-        tags.each do |tag|
-          video.tag_list.add(tag)
+    jobs = 20
+    
+    self.videos.find_in_batches(batch_size: jobs) do |videos|
+      pool = Thread.pool(jobs)
+      
+      videos.each do |video|
+        pool.process do
+          detail = NicoApi::Ext::Getthumbinfo.new.get(video.video_id)
+          next if detail.nil?
+          video.description = detail['description']
+          video.tag_list.add(*detail['tags']['tag'])
         end
-        video.save
       end
+      
+      pool.shutdown
+      videos.each(&:save)
     end
   end
 end
